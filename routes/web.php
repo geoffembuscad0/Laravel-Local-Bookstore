@@ -12,4 +12,8 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
+Route::view('admin/dashboard', 'livewire.admin.dashboard')
+    ->middleware(['auth', 'verified'])
+    ->name('admin.dashboard');
+
 require __DIR__.'/auth.php';
