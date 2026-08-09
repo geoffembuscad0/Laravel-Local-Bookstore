@@ -220,8 +220,8 @@
         <div>
           <h4 class="text-sm font-semibold mb-2">Support</h4>
           <ul class="text-sm text-gray-600 space-y-1">
-            <li><a href="{{ route('help') }}" class="hover:underline">Help Center</a></li>
-            <li><a href="{{ route('contact') }}" class="hover:underline">Contact</a></li>
+            <li><a href="{{-- route('help') --}}" class="hover:underline">Help Center</a></li>
+            <li><a href="{{-- route('contact') --}}" class="hover:underline">Contact</a></li>
           </ul>
         </div>
       </div>
@@ -239,8 +239,8 @@
       <div class="container mx-auto px-4 py-4 text-xs text-gray-400 flex items-center justify-between">
         <div>© {{ date('Y') }} Local Bookstore. All rights reserved.</div>
         <div>
-          <a href="{{ route('terms') }}" class="hover:underline mr-4">Terms</a>
-          <a href="{{ route('privacy') }}" class="hover:underline">Privacy</a>
+          <a href="{{-- route('terms') --}}" class="hover:underline mr-4">Terms</a>
+          <a href="{{-- route('privacy') --}}" class="hover:underline">Privacy</a>
         </div>
       </div>
     </div>
