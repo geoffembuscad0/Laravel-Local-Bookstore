@@ -20,7 +20,16 @@ new #[Layout('layouts.guest')] class extends Component
 
         Session::regenerate();
 
-        $this->redirectIntended(default: route('admin.dashboard', absolute: false), navigate: true);
+        $user = auth()->user();
+
+        // Reuse role-based post-login redirect logic: admins -> admin.dashboard, others -> dashboard
+        if ($user && method_exists($user, 'hasRole') && $user->hasRole('admin')) {
+            $this->redirectIntended(default: route('admin.dashboard', absolute: false), navigate: true);
+
+            return;
+        }
+
+        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }
 }; ?>
 
