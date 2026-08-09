@@ -3,20 +3,22 @@
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Customer\HomePage;
 
-Route::view('/', 'welcome');
+// Landing page: catalog (public)
+Route::get('/', HomePage::class)->name('home');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// Auth routes (login/register/etc.)
+require __DIR__.'/auth.php';
 
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
+// Authenticated (default) user routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Default user dashboard
+    Route::view('dashboard', 'dashboard')->name('dashboard');
 
-Route::get('home', HomePage::class)->name('home');
-
-Route::middleware(['auth', 'verified'])->group(function(){
-    Route::view('admin/dashboard', 'livewire.admin.dashboard')->name('admin.dashboard');
+    // User profile
+    Route::view('profile', 'profile')->name('profile');
 });
 
-require __DIR__.'/auth.php';
+// Admin routes - guarded by Spatie role:admin
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
+    Route::view('dashboard', 'livewire.admin.dashboard')->name('dashboard');
+});
