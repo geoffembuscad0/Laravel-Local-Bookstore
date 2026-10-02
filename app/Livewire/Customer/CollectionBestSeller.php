@@ -4,7 +4,7 @@ namespace App\Livewire\Customer;
 
 use Livewire\Component;
 
-class CollectionBestseller extends Component
+class CollectionBestSeller extends Component
 {
     public function render()
     {
