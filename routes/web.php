@@ -6,6 +6,10 @@ use App\Livewire\Customer\CartIndex;
 use App\Livewire\Customer\CreateCollection;
 use App\Livewire\Customer\CollectionBestSeller;
 use App\Livewire\Customer\CustomerCategories;
+use App\Livewire\Admin\Book\BookIndex;
+use App\Livewire\Admin\Book\CreateBook;
+use App\Livewire\Admin\Book\EditBook;
+use App\Livewire\Admin\Book\ViewBook;
 
 // Landing page: catalog (public)
 Route::get('/', HomePage::class)->name('home');
@@ -30,4 +34,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Admin routes - guarded by Spatie role:admin
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
     Route::view('dashboard', 'livewire.admin.dashboard')->name('dashboard');
+
+    Route::get('books', BookIndex::class)->name('books.index');
+    Route::get('books/create', CreateBook::class)->name('books.create');
+    Route::get('books/{book}', ViewBook::class)->name('books.view');
+    Route::get('books/{book}/edit', EditBook::class)->name('books.edit');
 });
