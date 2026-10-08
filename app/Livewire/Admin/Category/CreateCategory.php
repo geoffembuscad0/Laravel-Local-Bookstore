@@ -20,6 +20,7 @@ class CreateCategory extends Component
 
     public function save()
     {
+        $this->authorize('create', Category::class);
         $this->validate();
 
         $category = Category::create([
@@ -35,6 +36,7 @@ class CreateCategory extends Component
 
     public function render()
     {
+        $this->authorize('create', Category::class);
         $parentCategories = Category::whereNull('parent_id')->get();
 
         return view('livewire.admin.category.create-category', compact('parentCategories'));

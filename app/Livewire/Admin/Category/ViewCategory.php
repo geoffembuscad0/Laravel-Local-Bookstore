@@ -11,11 +11,13 @@ class ViewCategory extends Component
 
     public function mount(Category $category)
     {
+        $this->authorize('view', $category);
         $this->category = $category;
     }
 
     public function render()
     {
+        $this->authorize('view', $this->category);
         return view('livewire.admin.category.view-category');
     }
 }

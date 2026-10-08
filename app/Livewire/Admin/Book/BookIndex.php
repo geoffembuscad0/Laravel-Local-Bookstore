@@ -9,6 +9,14 @@ use Livewire\WithPagination;
 class BookIndex extends Component
 {
     use WithPagination;
+    private const SORTABLE_COLUMNS = [
+        'created_at',
+        'title',
+        'price',
+        'stock',
+        'isbn',
+        'sku',
+    ];
 
     public string $search = '';
     public string $sortBy = 'created_at';
@@ -21,6 +29,10 @@ class BookIndex extends Component
 
     public function sortBy($column)
     {
+        if (! in_array($column, self::SORTABLE_COLUMNS, true)) {
+            return;
+        }
+
         if ($this->sortBy === $column) {
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
         } else {
@@ -31,12 +43,14 @@ class BookIndex extends Component
 
     public function deleteBook(Book $book)
     {
+        $this->authorize('delete', $book);
         $book->delete();
         session()->flash('success', 'Book deleted successfully');
     }
 
     public function render()
     {
+        $this->authorize('viewAny', Book::class);
         $books = Book::query()
             ->when($this->search, function ($query) {
                 $query->where('title', 'like', "%{$this->search}%")
