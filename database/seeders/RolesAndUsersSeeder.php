@@ -41,7 +41,7 @@ class RolesAndUsersSeeder extends Seeder{
         }
 
         // Create sample regular users
-        for ($i = 1; $i <= 5; $i) {
+        for ($i = 1; $i <= 5; $i++) {
             $user = User::firstOrCreate(
                 ['email' => "user{$i}@example.com"],
                 [
