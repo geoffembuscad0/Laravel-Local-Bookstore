@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Admin\Dashboard;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Customer\HomePage;
 use App\Livewire\Customer\CartIndex;
@@ -21,10 +22,8 @@ Route::get('/', HomePage::class)->name('home');
 // Auth routes (login/register/etc.)
 require __DIR__.'/auth.php';
 
-// Authenticated (default) user routes
-Route::middleware(['auth', 'verified'])->group(function () {
-    // Default user dashboard
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+// Authenticated customer routes
+Route::middleware(['auth', 'verified', 'role:User'])->group(function () {
     Route::get('cart', CartIndex::class)->name('cart.index');
     Route::get('collection/add', CreateCollection::class)->name('collections.new');
     Route::get('collection', CartIndex::class)->name('collections.index');
@@ -35,17 +34,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('profile', 'profile')->name('profile');
 });
 
-// Admin routes - guarded by Spatie role:admin (case-insensitive check for 'Admin' role)
+// Admin routes - guarded by Spatie roles
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin,Super Admin'])->group(function () {
-    Route::view('dashboard', 'livewire.admin.dashboard')->name('dashboard');
+        Route::get('dashboard', Dashboard::class)->name('dashboard');
 
-    Route::get('books', BookIndex::class)->name('books.index');
-    Route::get('books/create', CreateBook::class)->name('books.create');
-    Route::get('books/{book}', ViewBook::class)->name('books.view');
-    Route::get('books/{book}/edit', EditBook::class)->name('books.edit');
+        Route::get('books', BookIndex::class)->name('books.index');
+        Route::get('books/create', CreateBook::class)->name('books.create');
+        Route::get('books/{book}', ViewBook::class)->name('books.view');
+        Route::get('books/{book}/edit', EditBook::class)->name('books.edit');
 
-    Route::get('category', CategoryIndex::class)->name('category.index');
-    Route::get('category/create', CreateCategory::class)->name('category.create');
-    Route::get('category/{category}', ViewCategory::class)->name('category.view');
-    Route::get('category/{category}/edit', EditCategory::class)->name('category.edit');
+        Route::get('category', CategoryIndex::class)->name('category.index');
+        Route::get('category/create', CreateCategory::class)->name('category.create');
+        Route::get('category/{category}', ViewCategory::class)->name('category.view');
+        Route::get('category/{category}/edit', EditCategory::class)->name('category.edit');
 });
