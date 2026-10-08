@@ -49,6 +49,7 @@ class CreateBook extends Component
 
     public function save()
     {
+        $this->authorize('create', Book::class);
         $this->validate();
 
         $book = Book::create([
@@ -73,6 +74,7 @@ class CreateBook extends Component
 
     public function render()
     {
+        $this->authorize('create', Book::class);
         return view('livewire.admin.book.create-book', [
             'publishers' => Publisher::all(),
             'authors' => Author::all(),

@@ -13,33 +13,39 @@ class RolesAndUsersSeeder extends Seeder{
         $adminRole = Role::firstOrCreate(['name' => 'Admin']);
         $userRole = Role::firstOrCreate(['name' => 'User']);
 
-        // Create Super Admin user
-        $superAdmin = User::firstOrCreate(
-            ['email' => 'superadmin@example.com'],
-            [
-                'name' => 'Super Admin',
-                'password' => bcrypt('password123'), // change this
-            ]
-        );
-        $superAdmin->assignRole($superAdminRole);
+        // Privileged users are only created when credentials are explicitly
+        // supplied through the environment. This prevents seeding a known
+        // privileged password into a real database.
+        if ($email = env('SEED_SUPER_ADMIN_EMAIL')) {
+            $superAdmin = User::firstOrCreate(
+                ['email' => $email],
+                [
+                    'name' => env('SEED_SUPER_ADMIN_NAME', 'Super Admin'),
+                    'password' => env('SEED_SUPER_ADMIN_PASSWORD'),
+                ]
+            );
 
-        // Create Admin user
-        $admin = User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            [
-                'name' => 'Default Admin',
-                'password' => bcrypt('password123'),
-            ]
-        );
-        $admin->assignRole($adminRole);
+            $superAdmin->assignRole($superAdminRole);
+        }
+
+        if ($email = env('SEED_ADMIN_EMAIL')) {
+            $admin = User::firstOrCreate(
+                ['email' => $email],
+                [
+                    'name' => env('SEED_ADMIN_NAME', 'Default Admin'),
+                    'password' => env('SEED_ADMIN_PASSWORD'),
+                ]
+            );
+
+            $admin->assignRole($adminRole);
+        }
 
         // Create sample regular users
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 5; $i) {
             $user = User::firstOrCreate(
                 ['email' => "user{$i}@example.com"],
                 [
-                    'name' => "Sample User {$i}",
-                    'password' => bcrypt('password123'),
+                    'name' => "Sample User {$i}", 'password' => 'password123'
                 ]
             );
             $user->assignRole($userRole);

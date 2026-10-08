@@ -9,6 +9,11 @@ use Livewire\WithPagination;
 class CategoryIndex extends Component
 {
     use WithPagination;
+    private const SORTABLE_COLUMNS = [
+        'created_at',
+        'name',
+        'slug',
+    ];
 
     public string $search = '';
     public string $sortBy = 'created_at';
@@ -21,6 +26,9 @@ class CategoryIndex extends Component
 
     public function sortBy($column)
     {
+        if (! in_array($column, self::SORTABLE_COLUMNS, true)) {
+            return;
+        }
         if ($this->sortBy === $column) {
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
         } else {
@@ -31,12 +39,14 @@ class CategoryIndex extends Component
 
     public function deleteCategory(Category $category)
     {
+        $this->authorize('delete', $category);
         $category->delete();
         session()->flash('success', 'Category deleted successfully');
     }
 
     public function render()
     {
+        $this->authorize('viewAny', Category::class);
         $categories = Category::query()
             ->when($this->search, function ($query) {
                 $query->where('name', 'like', "%{$this->search}%")

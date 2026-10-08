@@ -51,6 +51,7 @@ class EditBook extends Component
 
     public function mount(Book $book)
     {
+        $this->authorize('update', $book);
         $this->book = $book;
         $this->title = $book->title;
         $this->isbn = $book->isbn ?? '';
@@ -68,6 +69,7 @@ class EditBook extends Component
 
     public function update()
     {
+        $this->authorize('update', $this->book);
         $this->validate();
 
         $this->book->update([
@@ -91,6 +93,7 @@ class EditBook extends Component
 
     public function render()
     {
+        $this->authorize('update', $this->book);
         return view('livewire.admin.book.edit-book', [
             'publishers' => Publisher::all(),
             'authors' => Author::all(),

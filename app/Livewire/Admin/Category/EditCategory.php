@@ -22,6 +22,7 @@ class EditCategory extends Component
 
     public function mount(Category $category)
     {
+        $this->authorize('update', $category);
         $this->category = $category;
         $this->name = $category->name;
         $this->description = $category->description ?? '';
@@ -30,6 +31,7 @@ class EditCategory extends Component
 
     public function update()
     {
+        $this->authorize('update', $this->category);
         $this->validate();
 
         $this->category->update([
@@ -44,6 +46,7 @@ class EditCategory extends Component
 
     public function render()
     {
+        $this->authorize('update', $this->category);
         $parentCategories = Category::whereNull('parent_id')
             ->where('id', '!=', $this->category->id)
             ->get();

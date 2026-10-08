@@ -11,11 +11,13 @@ class ViewBook extends Component
 
     public function mount(Book $book)
     {
+        $this->authorize('view', $book);
         $this->book = $book;
     }
 
     public function render()
     {
+        $this->authorize('view', $this->book);
         return view('livewire.admin.book.view-book');
     }
 }
