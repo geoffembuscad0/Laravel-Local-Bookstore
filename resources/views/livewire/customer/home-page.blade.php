@@ -63,7 +63,33 @@
       </div>
     </header>
   @endunless
+  <section class="bg-gradient-to-r from-indigo-600 to-indigo-500 text-white">
+    <div class="container mx-auto px-4 py-20 flex flex-col lg:flex-row items-center gap-12">
+      <div class="lg:w-1/2">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">
+          Discover your next favorite book
+        </h1>
+        <p class="mt-4 text-indigo-100 max-w-xl">
+          Hand-picked titles from local authors and bestsellers. Fast shipping and secure checkout.
+        </p>
+        <div class="mt-8 flex gap-3">
+          <a href="#catalog" class="inline-flex items-center px-6 py-3 bg-white text-indigo-600 rounded-lg shadow hover:bg-gray-100 font-semibold">
+            Browse catalog
+          </a>
+          <a href="{{ route('collections.new') }}" class="inline-flex items-center px-6 py-3 border border-white/30 text-white rounded-lg hover:bg-white/10">
+            New arrivals
+          </a>
+        </div>
+      </div>
 
+      <div class="lg:w-1/2 w-full">
+        <!-- Placeholder for hero image -->
+        <div class="bg-white/10 rounded-lg p-6 flex items-center justify-center h-64">
+          <img src="{{ asset('images/hero-books.png') }}" alt="Books" class="object-contain h-56">
+        </div>
+      </div>
+    </div>
+  </section>
   <main class="container mx-auto px-4 py-10">
     <section class="mb-8">
       <h2 class="text-lg font-semibold mb-4">Shop by category</h2>
