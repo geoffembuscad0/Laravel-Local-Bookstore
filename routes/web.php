@@ -10,6 +10,10 @@ use App\Livewire\Admin\Book\BookIndex;
 use App\Livewire\Admin\Book\CreateBook;
 use App\Livewire\Admin\Book\EditBook;
 use App\Livewire\Admin\Book\ViewBook;
+use App\Livewire\Admin\Category\CategoryIndex;
+use App\Livewire\Admin\Category\CreateCategory;
+use App\Livewire\Admin\Category\EditCategory;
+use App\Livewire\Admin\Category\ViewCategory;
 
 // Landing page: catalog (public)
 Route::get('/', HomePage::class)->name('home');
@@ -39,4 +43,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('books/create', CreateBook::class)->name('books.create');
     Route::get('books/{book}', ViewBook::class)->name('books.view');
     Route::get('books/{book}/edit', EditBook::class)->name('books.edit');
+
+    Route::get('category', CategoryIndex::class)->name('category.index');
+    Route::get('category/create', CreateCategory::class)->name('category.create');
+    Route::get('category/{category}', ViewCategory::class)->name('category.view');
+    Route::get('category/{category}/edit', EditCategory::class)->name('category.edit');
 });
