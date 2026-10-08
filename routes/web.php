@@ -35,8 +35,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('profile', 'profile')->name('profile');
 });
 
-// Admin routes - guarded by Spatie role:admin
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
+// Admin routes - guarded by Spatie role:admin (case-insensitive check for 'Admin' role)
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin'])->group(function () {
     Route::view('dashboard', 'livewire.admin.dashboard')->name('dashboard');
 
     Route::get('books', BookIndex::class)->name('books.index');
