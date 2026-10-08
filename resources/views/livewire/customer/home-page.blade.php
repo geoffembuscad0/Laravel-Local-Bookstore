@@ -1,47 +1,6 @@
 <!-- resources/views/livewire/home-page.blade.php -->
 <div class="min-h-screen bg-gray-50 text-gray-900">
-  <!-- Top navigation -->
-  <header class="bg-white shadow-sm">
-    <div class="container mx-auto px-4 py-4 flex items-center justify-between">
-      <a href="{{ route('home') }}" class="flex items-center gap-3">
-        <img src="{{ asset('images/logo.svg') }}" alt="Bookstore" class="w-10 h-10">
-        <span class="font-bold text-xl tracking-tight">Local Bookstore</span>
-      </a>
-
-      <form class="flex-1 mx-6" wire:submit.prevent>
-        <label for="search" class="sr-only">Search books</label>
-        <div class="relative">
-          <input id="search" type="search" wire:model.debounce.300ms="search"
-                 placeholder="Search books, authors, ISBN..." 
-                 class="w-full border border-gray-200 rounded-full py-2 pl-4 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-          <button type="button" class="absolute right-1 top-1/2 -translate-y-1/2 bg-indigo-600 text-white rounded-full p-2 hover:bg-indigo-700"
-                  aria-label="Search">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M10.5 18A7.5 7.5 0 1010.5 3a7.5 7.5 0 000 15z"/>
-            </svg>
-          </button>
-        </div>
-      </form>
-
-      <div class="flex items-center gap-4">
-        <a href="{{ route('cart.index') }}" class="relative inline-flex items-center gap-2 text-sm">
-          <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 6h13"/>
-          </svg>
-          <span class="hidden sm:inline">Cart</span>
-          <span class="ml-1 inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium bg-indigo-50 text-indigo-700 rounded-full">
-            {{ $cartCount ?? 0 }}
-          </span>
-        </a>
-
-        @guest
-          <a href="{{ route('login') }}" class="text-sm text-gray-700 hover:underline">Sign in</a>
-        @else
-          <a href="{{ route('dashboard') }}" class="text-sm text-gray-700 hover:underline">Dashboard</a>
-        @endguest
-      </div>
-    </div>
-  </header>
+  @include('livewire.customer.partials.top-navigation')
 
   <!-- Hero -->
   <section class="bg-gradient-to-r from-indigo-600 to-indigo-500 text-white">
