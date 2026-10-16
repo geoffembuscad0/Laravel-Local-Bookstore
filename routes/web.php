@@ -29,6 +29,7 @@ Route::middleware(['auth', 'verified', 'role:User'])->group(function () {
     Route::get('collection', CartIndex::class)->name('collections.index');
     Route::get('collection/bestsellers', CollectionBestSeller::class)->name('collections.bestsellers');
     Route::get('categories', CustomerCategories::class)->name('categories');
+    Route::get('categories/{category}', CustomerCategories::class)->name('categories.view');
 
     // User profile
     Route::view('profile', 'profile')->name('profile');

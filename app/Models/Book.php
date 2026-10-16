@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Book extends Model
@@ -41,5 +42,15 @@ class Book extends Model
     public function primaryAuthor(): BelongsTo
     {
         return $this->belongsTo(Author::class, 'primary_author_id');
+    }
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class)
+            ->withTimestamps();
+    }
+    public function books(): BelongsToMany
+    {
+        return $this->belongsToMany(Book::class)
+            ->withTimestamps();
     }
 }

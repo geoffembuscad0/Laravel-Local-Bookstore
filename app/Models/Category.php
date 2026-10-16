@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Category extends Model
 {
@@ -44,6 +45,16 @@ class Category extends Model
     public static function allForAdmin()
     {
         return static::withTrashed()->get();
+    }
+    public function books(): BelongsToMany
+    {
+        return $this->belongsToMany(Book::class)->withTimestamps();
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class)
+            ->withTimestamps();
     }
 
     /**

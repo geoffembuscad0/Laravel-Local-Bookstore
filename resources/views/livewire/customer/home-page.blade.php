@@ -95,10 +95,13 @@
       <h2 class="text-lg font-semibold mb-4">Shop by category</h2>
       <div class="flex gap-4 overflow-x-auto pb-2">
         @foreach($categories ?? [] as $category)
-          <a href="{{ route('category.show', $category->slug) }}"
-             class="flex-shrink-0 bg-white border border-gray-200 rounded-lg px-4 py-3 hover:shadow transition">
-            <div class="text-sm font-medium">{{ $category->name }}</div>
-            <div class="text-xs text-gray-500 mt-1">{{ $category->books_count ?? '' }} titles</div>
+          <a href="{{ route('categories.view', $category->slug) }}" class="flex-shrink-0 bg-white border border-gray-200 rounded-lg px-4 py-3 hover:shadow transition">
+            <div class="text-sm font-medium">
+              {{ $category->name }}
+            </div>
+            <div class="text-xs text-gray-500 mt-1">
+              {{ $category->books_count }} {{ $category->books_count === 1 ? 'title' : 'titles' }}
+            </div>
           </a>
         @endforeach
 
