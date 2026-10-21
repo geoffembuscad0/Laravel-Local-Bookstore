@@ -18,6 +18,6 @@ class ViewCategory extends Component
     public function render()
     {
         $this->authorize('view', $this->category);
-        return view('livewire.admin.category.view-category');
+        return view('livewire.admin.category.view-category')->layout('layouts.admin');
     }
 }

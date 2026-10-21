@@ -97,6 +97,6 @@ class EditBook extends Component
         return view('livewire.admin.book.edit-book', [
             'publishers' => Publisher::all(),
             'authors' => Author::all(),
-        ]);
+        ])->layout('layouts.admin');
     }
 }

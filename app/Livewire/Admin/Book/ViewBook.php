@@ -18,6 +18,6 @@ class ViewBook extends Component
     public function render()
     {
         $this->authorize('view', $this->book);
-        return view('livewire.admin.book.view-book');
+        return view('livewire.admin.book.view-book')->layout('layouts.admin');
     }
 }

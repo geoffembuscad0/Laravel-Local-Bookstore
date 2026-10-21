@@ -56,6 +56,6 @@ class CategoryIndex extends Component
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate(10);
 
-        return view('livewire.admin.category.category-index', compact('categories'));
+        return view('livewire.admin.category.category-index', compact('categories'))->layout('layouts.admin');
     }
 }

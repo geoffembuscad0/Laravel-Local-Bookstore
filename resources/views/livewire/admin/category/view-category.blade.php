@@ -2,10 +2,10 @@
     <div class="mb-6 flex justify-between items-center">
         <h1 class="text-3xl font-bold">{{ $category->name }}</h1>
         <div class="space-x-2">
-            <a href="{{ route('admin.categories.edit', $category) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{{ route('admin.category.edit', $category) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
                 Edit
             </a>
-            <a href="{{ route('admin.categories.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+            <a href="{{ route('admin.category.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                 Back to List
             </a>
         </div>
@@ -85,7 +85,7 @@
                 @foreach ($category->children as $child)
                     <li class="flex items-center justify-between p-3 bg-gray-50 rounded">
                         <span>
-                            <a href="{{ route('admin.categories.view', $child) }}" class="text-blue-500 hover:underline">
+                            <a href="{{ route('admin.category.view', $child) }}" class="text-blue-500 hover:underline">
                                 {{ $child->name }}
                             </a>
                         </span>

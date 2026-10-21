@@ -60,6 +60,6 @@ class BookIndex extends Component
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate(10);
 
-        return view('livewire.admin.book.book-index', compact('books'));
+        return view('livewire.admin.book.book-index', compact('books'))->layout('layouts.admin');
     }
 }

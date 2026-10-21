@@ -39,9 +39,9 @@ class PermissionSeeder extends Seeder
             | Categories
             |--------------------------------------------------------------------------
             */
-            'categories.view',
-            'categories.create',
-            'categories.edit',
+            'category.view',
+            'category.create',
+            'category.edit',
             'categories.delete',
 
             /*
@@ -70,7 +70,7 @@ class PermissionSeeder extends Seeder
             | Customer Categories
             |--------------------------------------------------------------------------
             */
-            'customer-categories.view',
+            'customer-category.view',
         ];
 
         foreach ($permissions as $permission) {

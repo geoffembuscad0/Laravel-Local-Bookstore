@@ -95,7 +95,7 @@
       <h2 class="text-lg font-semibold mb-4">Shop by category</h2>
       <div class="flex gap-4 overflow-x-auto pb-2">
         @foreach($categories ?? [] as $category)
-          <a href="{{ route('categories.view', $category->slug) }}" class="flex-shrink-0 bg-white border border-gray-200 rounded-lg px-4 py-3 hover:shadow transition">
+          <a href="{{ route('category.view', $category->slug) }}" class="flex-shrink-0 bg-white border border-gray-200 rounded-lg px-4 py-3 hover:shadow transition">
             <div class="text-sm font-medium">
               {{ $category->name }}
             </div>

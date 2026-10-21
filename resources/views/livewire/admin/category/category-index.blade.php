@@ -1,7 +1,7 @@
 <div class="container mx-auto px-4 py-8">
     <div class="mb-6 flex justify-between items-center">
         <h1 class="text-3xl font-bold">Categories Management</h1>
-        <a href="{{ route('admin.categories.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <a href="{{ route('admin.category.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
             Add New Category
         </a>
     </div>
@@ -63,8 +63,8 @@
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-600">{{ $category->created_at->format('M d, Y') }}</td>
                         <td class="px-6 py-4 text-sm space-x-2">
-                            <a href="{{ route('admin.categories.view', $category) }}" class="text-blue-500 hover:underline">View</a>
-                            <a href="{{ route('admin.categories.edit', $category) }}" class="text-yellow-500 hover:underline">Edit</a>
+                            <a href="{{ route('admin.category.view', $category) }}" class="text-blue-500 hover:underline">View</a>
+                            <a href="{{ route('admin.category.edit', $category) }}" class="text-yellow-500 hover:underline">Edit</a>
                             <button wire:click="deleteCategory({{ $category->id }})" wire:confirm="Are you sure you want to delete this category?" class="text-red-500 hover:underline">Delete</button>
                         </td>
                     </tr>

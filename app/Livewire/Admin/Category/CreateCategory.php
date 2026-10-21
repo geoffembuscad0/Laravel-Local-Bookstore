@@ -31,7 +31,7 @@ class CreateCategory extends Component
         ]);
 
         session()->flash('success', 'Category created successfully');
-        $this->redirect(route('admin.categories.view', $category));
+        $this->redirect(route('admin.category.view', $category));
     }
 
     public function render()
@@ -39,6 +39,6 @@ class CreateCategory extends Component
         $this->authorize('create', Category::class);
         $parentCategories = Category::whereNull('parent_id')->get();
 
-        return view('livewire.admin.category.create-category', compact('parentCategories'));
+        return view('livewire.admin.category.create-category', compact('parentCategories'))->layout('layouts.admin');
     }
 }

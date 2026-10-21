@@ -78,6 +78,6 @@ class CreateBook extends Component
         return view('livewire.admin.book.create-book', [
             'publishers' => Publisher::all(),
             'authors' => Author::all(),
-        ]);
+        ])->layout('layouts.admin');
     }
 }

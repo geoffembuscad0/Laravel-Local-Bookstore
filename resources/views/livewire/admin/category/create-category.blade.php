@@ -48,7 +48,7 @@
 
         <!-- Form Actions -->
         <div class="mt-8 flex justify-end gap-4">
-            <a href="{{ route('admin.categories.index') }}" class="px-6 py-2 bg-gray-500 hover:bg-gray-700 text-white font-bold rounded">
+            <a href="{{ route('admin.category.index') }}" class="px-6 py-2 bg-gray-500 hover:bg-gray-700 text-white font-bold rounded">
                 Cancel
             </a>
             <button 

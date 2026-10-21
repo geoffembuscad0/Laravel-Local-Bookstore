@@ -51,6 +51,6 @@ class EditCategory extends Component
             ->where('id', '!=', $this->category->id)
             ->get();
 
-        return view('livewire.admin.category.edit-category', compact('parentCategories'));
+        return view('livewire.admin.category.edit-category', compact('parentCategories'))->layout('layouts.admin');
     }
 }
