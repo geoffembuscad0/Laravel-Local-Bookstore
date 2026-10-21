@@ -11,6 +11,10 @@ use App\Livewire\Admin\Book\BookIndex;
 use App\Livewire\Admin\Book\CreateBook;
 use App\Livewire\Admin\Book\EditBook;
 use App\Livewire\Admin\Book\ViewBook;
+use App\Livewire\Admin\Author\AuthorIndex;
+use App\Livewire\Admin\Author\CreateAuthor;
+use App\Livewire\Admin\Author\EditAuthor;
+use App\Livewire\Admin\Author\ViewAuthor;
 use App\Livewire\Admin\Category\CategoryIndex;
 use App\Livewire\Admin\Category\CreateCategory;
 use App\Livewire\Admin\Category\EditCategory;
@@ -43,6 +47,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin,Super Ad
         Route::get('books/create', CreateBook::class)->name('books.create');
         Route::get('books/{book}', ViewBook::class)->name('books.view');
         Route::get('books/{book}/edit', EditBook::class)->name('books.edit');
+
+        Route::get('authors', AuthorIndex::class)->name('authors.index');
+        Route::get('authors/create', CreateAuthor::class)->name('authors.create');
+        Route::get('authors/{author}', ViewAuthor::class)->name('authors.view');
+        Route::get('authors/{author}/edit', EditAuthor::class)->name('authors.edit');
 
         Route::get('category', CategoryIndex::class)->name('category.index');
         Route::get('category/create', CreateCategory::class)->name('category.create');
