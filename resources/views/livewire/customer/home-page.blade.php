@@ -164,10 +164,6 @@
           @endfor
         @endforelse
       </div>
-
-      <div class="mt-8 flex justify-center">
-        {{ $products->links ?? '' }}
-      </div>
     </section>
   </main>
 </div>
