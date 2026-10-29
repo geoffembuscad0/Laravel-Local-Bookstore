@@ -26,5 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::policy(Book::class, BookPolicy::class);
         Gate::policy(Category::class, CategoryPolicy::class);
+        Gate::policy(Author::class, AuthorPolicy::class);
+        Gate::policy(Publisher::class, PublisherPolicy::class);
     }
 }

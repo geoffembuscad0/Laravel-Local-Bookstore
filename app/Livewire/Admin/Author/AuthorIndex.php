@@ -55,6 +55,6 @@ class AuthorIndex extends Component
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate(10);
 
-        return view('livewire.admin.author.author-index', compact('authors'));
+        return view('livewire.admin.author.author-index', compact('authors'))->layout('layouts.admin');
     }
 }

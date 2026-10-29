@@ -8,6 +8,6 @@ class PublisherIndex extends Component
 {
     public function render()
     {
-        return view('livewire.admin.publisher.publisher-index');
+        return view('livewire.admin.publisher.publisher-index')->layout('layouts.admin');
     }
 }
