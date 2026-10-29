@@ -3,6 +3,11 @@
         <h1 class="text-3xl font-bold">Create New Author</h1>
         <p class="mt-1 text-sm text-gray-600">Add an author's details to the bookstore catalog.</p>
     </div>
+    @if (session('success'))
+        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+            {{ session('success') }}
+        </div>
+    @endif
 
     <form wire:submit="save" class="rounded-lg bg-white p-6 shadow">
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2">

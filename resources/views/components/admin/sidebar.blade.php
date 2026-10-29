@@ -1,8 +1,16 @@
+@php
+    $catalogMenuActive = request()->routeIs(
+        'admin.books.*',
+        'admin.authors.*',
+        'admin.category.*',
+        'admin.publisher.*'
+    );
+@endphp
 <aside class="w-64 bg-slate-900 text-white shadow-lg hidden md:fixed md:left-0 md:top-0 md:h-screen md:overflow-y-auto md:flex md:flex-col">
             <!-- Sidebar Header -->
             <div class="p-6 border-b border-slate-700">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center font-bold text-lg">
+                    <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center font-bold text-lg">
                         B
                     </div>
                     <div>
@@ -15,42 +23,86 @@
             <!-- Navigation Menu -->
             <nav class="flex-1 px-4 py-6 space-y-2">
                 <!-- Dashboard -->
-                <a href="{{route('admin.dashboard')}}" class="flex items-center space-x-3 px-4 py-3 rounded-lg bg-blue-600 text-white font-medium transition-colors hover:bg-blue-700">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-3m0 0l7-4 7 4M5 9v10a1 1 0 001 1h12a1 1 0 001-1V9m-9 11l4-2m-9-2l4 2m9-11l-7-4-7 4"></path>
-                    </svg>
+                <a href="{{ route('admin.dashboard') }}" class="flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors {{ request()->routeIs('admin.dashboard')
+                    ? 'bg-blue-600 text-white'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
+                    @if(request()->routeIs('admin.dashboard'))
+                        aria-current="page"
+                    @endif
+                >
+                    {{-- Keep your existing SVG icon here --}}
                     <span>Dashboard</span>
                 </a>
 
                 <!-- Books Management -->
                 <div class="space-y-1">
-                    <button class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-slate-300 font-medium transition-colors hover:bg-slate-800 hover:text-white focus:outline-none" onclick="toggleSubmenu('books-menu')">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C6.5 6.253 2 10.998 2 17.25S6.5 28 12 28s10-4.745 10-10.75C22 10.998 17.5 6.253 12 6.253z"></path>
-                        </svg>
+                    <button type="button"
+                        class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors focus:outline-none {{ $catalogMenuActive
+                            ? 'bg-slate-800 text-white'
+                            : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
+                        onclick="toggleSubmenu('books-menu')"
+                        aria-expanded="{{ $catalogMenuActive ? 'true' : 'false' }}"
+                        aria-controls="books-menu">
+                        {{-- Keep your existing SVG icon here --}}
                         <span>Books</span>
-                        <svg class="w-4 h-4 ml-auto transition-transform" id="books-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        <svg class="w-4 h-4 ml-auto transition-transform {{ $catalogMenuActive ? 'rotate-180' : '' }}" id="books-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" ></path>
                         </svg>
                     </button>
                     <div id="books-menu" class="hidden space-y-1 pl-2">
-                        <a href="{{ route('admin.books.index') }}" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-slate-400 text-sm transition-colors hover:bg-slate-800 hover:text-white">
+                        <a href="{{ route('admin.books.index') }}" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm transition-colors
+                                {{ request()->routeIs('admin.books.index')
+                                    ? 'bg-blue-600 text-white font-medium'
+                                    : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}"
+                            @if(request()->routeIs('admin.books.index'))
+                                aria-current="page"
+                            @endif
+                        >
                             <span class="w-1 h-1 bg-blue-500 rounded-full"></span>
                             <span>All Books</span>
                         </a>
-                        <a href="{{ route('admin.books.create') }}" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-slate-400 text-sm transition-colors hover:bg-slate-800 hover:text-white">
+                        <a href="{{ route('admin.books.create') }}"
+                            class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm transition-colors
+                                {{ request()->routeIs('admin.books.create')
+                                    ? 'bg-blue-600 text-white font-medium'
+                                    : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}"
+                            @if(request()->routeIs('admin.books.create'))
+                                aria-current="page"
+                            @endif
+                        >
                             <span class="w-1 h-1 bg-blue-500 rounded-full"></span>
                             <span>Add Book</span>
                         </a>
-                        <a href="{{ route('admin.authors.index') }}" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-slate-400 text-sm transition-colors hover:bg-slate-800 hover:text-white">
+                        <a href="{{ route('admin.authors.index') }}" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm transition-colors
+                                {{ request()->routeIs('admin.authors.index')
+                                    ? 'bg-blue-600 text-white font-medium'
+                                    : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}"
+                            @if(request()->routeIs('admin.books.create'))
+                                aria-current="page"
+                            @endif
+                        >
                             <span class="w-1 h-1 bg-blue-500 rounded-full"></span>
                             <span>Authors</span>
                         </a>
-                        <a href="{{ route('admin.publisher.index') }}" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-slate-400 text-sm transition-colors hover:bg-slate-800 hover:text-white">
+                        <a href="{{ route('admin.publisher.index') }}" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm transition-colors
+                                {{ request()->routeIs('admin.publisher.index')
+                                    ? 'bg-blue-600 text-white font-medium'
+                                    : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}"
+                            @if(request()->routeIs('admin.publisher.create'))
+                                aria-current="page"
+                            @endif
+                        >
                             <span class="w-1 h-1 bg-blue-500 rounded-full"></span>
                             <span>Publishers</span>
                         </a>
-                        <a href="{{ route('admin.category.index') }}" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-slate-400 text-sm transition-colors hover:bg-slate-800 hover:text-white">
+                        <a href="{{ route('admin.category.index') }}" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm transition-colors
+                                {{ request()->routeIs('admin.category.index')
+                                    ? 'bg-blue-600 text-white font-medium'
+                                    : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}"
+                            @if(request()->routeIs('admin.category.create'))
+                                aria-current="page"
+                            @endif
+                        >
                             <span class="w-1 h-1 bg-blue-500 rounded-full"></span>
                             <span>Categories</span>
                         </a>
@@ -117,8 +169,8 @@
                         A
                     </div>
                     <div class="flex-1">
-                        <p class="text-sm font-medium">Admin User</p>
-                        <p class="text-xs text-slate-400">admin@bookstore.com</p>
+                        <p class="text-sm font-medium">{{ auth()->user()->name }}</p>
+                        <p class="text-xs text-slate-400">{{ auth()->user()->email }}</p>
                     </div>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">
