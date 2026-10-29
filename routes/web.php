@@ -20,6 +20,10 @@ use App\Livewire\Admin\Category\CategoryIndex;
 use App\Livewire\Admin\Category\CreateCategory;
 use App\Livewire\Admin\Category\EditCategory;
 use App\Livewire\Admin\Category\ViewCategory;
+use App\Livewire\Admin\Publisher\PublisherIndex;
+use App\Livewire\Admin\Publisher\CreatePublisher;
+use App\Livewire\Admin\Publisher\EditPublisher;
+use App\Livewire\Admin\Publisher\ViewPublisher;
 
 // Landing page: catalog (public)
 Route::get('/', HomePage::class)->name('home');
@@ -61,4 +65,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin,Super Ad
         Route::get('category/create', CreateCategory::class)->name('category.create');
         Route::get('category/{category}', ViewCategory::class)->name('category.view');
         Route::get('category/{category}/edit', EditCategory::class)->name('category.edit');
+
+        Route::get('publisher', PublisherIndex::class)->name('publisher.index');
+        Route::get('publisher/create', CreatePublisher::class)->name('publisher.create');
+        Route::get('publisher/{publisher}', ViewPublisher::class)->name('publisher.view');
+        Route::get('publisher/{publisher}/edit', EditPublisher::class)->name('publisher.edit');
 });

@@ -34,6 +34,16 @@ class PermissionSeeder extends Seeder
             'books.edit',
             'books.delete',
 
+            'authors.view',
+            'authors.create',
+            'authors.edit',
+            'authors.delete',
+
+            'publisher.view',
+            'publisher.create',
+            'publisher.edit',
+            'publisher.delete',
+
             /*
             |--------------------------------------------------------------------------
             | Categories
