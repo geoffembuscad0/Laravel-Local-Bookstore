@@ -1,63 +1,78 @@
 <div class="container mx-auto px-4 py-8">
-    <div class="mb-6 flex justify-between items-center">
+    <div class="mb-6 flex items-center justify-between">
         <h1 class="text-3xl font-bold">Authors Management</h1>
-        <a href="{{ route('admin.authors.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <a href="{{ route('admin.authors.create') }}"
+           class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
             Add New Author
         </a>
     </div>
 
     @if (session('success'))
-        <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+        <div class="mb-4 rounded border border-green-400 bg-green-100 p-4 text-green-700" role="status">
             {{ session('success') }}
         </div>
     @endif
 
     <div class="mb-4">
-        <input 
-            type="text" 
-            wire:model.live="search" 
-            placeholder="Search by Author Firstname, Lastname..." 
-            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
+        <input type="search"
+               wire:model.live.debounce.300ms="search"
+               placeholder="Search by name, email, country, or biography..."
+               aria-label="Search authors"
+               class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
     </div>
 
-    <div class="overflow-x-auto bg-white rounded-lg shadow">
+    <div class="overflow-x-auto rounded-lg bg-white shadow">
         <table class="w-full">
-            <thead class="bg-gray-100 border-b">
+            <thead class="border-b bg-gray-100">
                 <tr>
-                    <th class="px-6 py-3 text-left text-sm font-semibold cursor-pointer" wire:click="sortBy('name')">
-                        name
+                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-sm font-semibold" wire:click="sortBy('name')">
+                        Name
                         @if ($sortBy === 'name')
-                            <span>{{ $sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                            <span aria-hidden="true">{{ $sortDirection === 'asc' ? '▲' : '▼' }}</span>
                         @endif
                     </th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold cursor-pointer" wire:click="sortBy('email')">
-                        email
+                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-sm font-semibold" wire:click="sortBy('email')">
+                        Email
                         @if ($sortBy === 'email')
-                            <span>{{ $sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                            <span aria-hidden="true">{{ $sortDirection === 'asc' ? '▲' : '▼' }}</span>
                         @endif
                     </th>
-                    <th class="px-6 py-3 text-left text-sm font-semibold">Actions</th>
+                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-sm font-semibold" wire:click="sortBy('country')">
+                        Country
+                        @if ($sortBy === 'country')
+                            <span aria-hidden="true">{{ $sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                        @endif
+                    </th>
+                    <th scope="col" class="cursor-pointer px-6 py-3 text-left text-sm font-semibold" wire:click="sortBy('created_at')">
+                        Created
+                        @if ($sortBy === 'created_at')
+                            <span aria-hidden="true">{{ $sortDirection === 'asc' ? '▲' : '▼' }}</span>
+                        @endif
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-left text-sm font-semibold">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($authors as $author)
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-4 text-sm">{{ $author->name }}</td>
-                        <td class="px-6 py-4 text-sm">
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $author->email > 0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                {{ $author->email }}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-sm space-x-2">
-                            <a href="{{ route('admin.authors.view', $author) }}" class="text-blue-500 hover:underline">View</a>
-                            <a href="{{ route('admin.authors.edit', $author) }}" class="text-yellow-500 hover:underline">Edit</a>
-                            <button wire:click="deleteauthor({{ $author->id }})" wire:confirm="Are you sure?" class="text-red-500 hover:underline">Delete</button>
+                    <tr wire:key="author-{{ $author->id }}" class="border-b hover:bg-gray-50">
+                        <td class="px-6 py-4 text-sm font-medium">{{ $author->name }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-600">{{ $author->email ?: '—' }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-600">{{ $author->country ?: '—' }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-600">{{ $author->created_at?->format('M d, Y') ?? '—' }}</td>
+                        <td class="space-x-2 px-6 py-4 text-sm">
+                            <a href="{{ route('admin.authors.view', $author) }}" class="text-blue-600 hover:underline">View</a>
+                            <a href="{{ route('admin.authors.edit', $author) }}" class="text-yellow-600 hover:underline">Edit</a>
+                            <button type="button"
+                                    wire:click="deleteAuthor({{ $author->id }})"
+                                    wire:confirm="Are you sure you want to delete this author? The author will be soft-deleted."
+                                    class="text-red-600 hover:underline">
+                                Delete
+                            </button>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">No authors found</td>
+                        <td colspan="5" class="px-6 py-8 text-center text-gray-500">No authors found.</td>
                     </tr>
                 @endforelse
             </tbody>

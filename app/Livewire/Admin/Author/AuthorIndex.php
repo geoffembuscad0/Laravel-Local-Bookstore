@@ -9,22 +9,24 @@ use Livewire\WithPagination;
 class AuthorIndex extends Component
 {
     use WithPagination;
+
     private const SORTABLE_COLUMNS = [
         'created_at',
         'name',
-        'email'
+        'email',
+        'country',
     ];
 
     public string $search = '';
     public string $sortBy = 'created_at';
     public string $sortDirection = 'desc';
 
-    public function updatedSearch()
+    public function updatedSearch(): void
     {
         $this->resetPage();
     }
 
-    public function sortBy($column)
+    public function sortBy(string $column): void
     {
         if (! in_array($column, self::SORTABLE_COLUMNS, true)) {
             return;
@@ -38,23 +40,34 @@ class AuthorIndex extends Component
         }
     }
 
-    public function deleteAuthor(Author $author)
+    public function deleteAuthor(Author $author): void
     {
         $this->authorize('delete', $author);
+
         $author->delete();
-        session()->flash('success', 'Author deleted successfully');
+
+        session()->flash('success', 'Author deleted successfully.');
     }
 
     public function render()
     {
         $this->authorize('viewAny', Author::class);
+
         $authors = Author::query()
-            ->when($this->search, function ($query) {
-                $query->where('name', 'like', "%{$this->search}%");
+            ->when(trim($this->search) !== '', function ($query) {
+                $term = '%' . trim($this->search) . '%';
+
+                $query->where(function ($query) use ($term) {
+                    $query->where('name', 'like', $term)
+                        ->orWhere('email', 'like', $term)
+                        ->orWhere('country', 'like', $term)
+                        ->orWhere('bio', 'like', $term);
+                });
             })
             ->orderBy($this->sortBy, $this->sortDirection)
             ->paginate(10);
 
-        return view('livewire.admin.author.author-index', compact('authors'))->layout('layouts.admin');
+        return view('livewire.admin.author.author-index', compact('authors'))
+            ->layout('layouts.admin');
     }
 }
