@@ -79,7 +79,7 @@ class EditBook extends Component
             'description' => $this->description ?: null,
             'price' => $this->price,
             'discount_price' => $this->discount_price,
-            'stock' => $this->stock,
+//            'stock' => $this->stock,
             'pages' => $this->pages,
             'language' => $this->language ?: null,
             'publication_date' => $this->publication_date,

@@ -6,6 +6,8 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Publisher;
 use Illuminate\Support\Str;
+use App\Services\InventoryService;
+use App\Enums\StockMovementType;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
@@ -70,10 +72,20 @@ class CreateBook extends Component
                 'sku' => $this->sku ?: null,
                 'publisher_id' => $this->publisher_id,
                 'primary_author_id' => $this->primary_author_id,
+                'stock' => 0,
             ]);
 
             // Step 2: Automatically create the associated Product
             $this->createProduct($book);
+            if ($this->stock > 0) {
+                app(InventoryService::class)->recordStockMovement(
+                    book: $book,
+                    quantity: $this->stock,
+                    userId: auth()->id(),
+                    type: StockMovementType::INITIAL_STOCK,
+                    notes: 'Initial stock upon book creation.',
+                );
+            }
 
             return $book;
         });
