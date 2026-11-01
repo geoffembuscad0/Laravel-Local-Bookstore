@@ -65,7 +65,12 @@ class InventoryService
 
             $quantityBefore = (int) $book->stock;
 
-            if ($type === StockMovementType::INITIAL_STOCK && $quantityBefore !== 0) {
+            $hasInitialStock = StockMovement::query()
+                ->where('book_id', $book->id)
+                ->where('type', StockMovementType::INITIAL_STOCK->value)
+                ->exists();
+
+            if ($type === StockMovementType::INITIAL_STOCK && $hasInitialStock) {
                 throw ValidationException::withMessages([
                     'quantity' => 'Initial stock has already been recorded for this book.',
                 ]);
