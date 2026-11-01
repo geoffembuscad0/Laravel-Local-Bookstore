@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\Publisher;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
 
 class CreateBook extends Component
@@ -52,24 +53,39 @@ class CreateBook extends Component
         $this->authorize('create', Book::class);
         $this->validate();
 
-        $book = Book::create([
-            'title' => $this->title,
-            'slug' => Str::slug($this->title),
-            'isbn' => $this->isbn ?: null,
-            'description' => $this->description ?: null,
-            'price' => $this->price,
-            'discount_price' => $this->discount_price,
-            'stock' => $this->stock,
-            'pages' => $this->pages,
-            'language' => $this->language ?: null,
-            'publication_date' => $this->publication_date,
-            'sku' => $this->sku ?: null,
-            'publisher_id' => $this->publisher_id,
-            'primary_author_id' => $this->primary_author_id,
-        ]);
+        $book = DB::transaction(function () {
+
+            // Step 1: Create the Book
+            $book = Book::create([
+                'title' => $this->title,
+                'slug' => Str::slug($this->title),
+                'isbn' => $this->isbn ?: null,
+                'description' => $this->description ?: null,
+                'price' => $this->price,
+                'discount_price' => $this->discount_price,
+                'stock' => $this->stock,
+                'pages' => $this->pages,
+                'language' => $this->language ?: null,
+                'publication_date' => $this->publication_date,
+                'sku' => $this->sku ?: null,
+                'publisher_id' => $this->publisher_id,
+                'primary_author_id' => $this->primary_author_id,
+            ]);
+
+            // Step 2: Automatically create the associated Product
+            $this->createProduct($book);
+
+            return $book;
+        });
 
         session()->flash('success', 'Book created successfully');
         redirect()->route('admin.books.view', $book);
+    }
+    private function createProduct(Book $book): void
+    {
+        $book->product()->create([
+            'is_active' => true,
+        ]);
     }
 
     public function render()
