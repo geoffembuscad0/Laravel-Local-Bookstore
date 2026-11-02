@@ -1,59 +1,246 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Local Bookstore
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel-based online bookstore application with a customer storefront and an admin management area for books, catalog data, inventory, and purchasing workflows.
 
-## About Laravel
+## Project overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This project is designed as a practical bookstore management system with two primary user experiences:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Customer-facing storefront for browsing books, categories, collections, and cart flow
+- Admin-side management for catalog data, stock control, purchase orders, and inventory movements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The application uses Laravel with Livewire and Tailwind for the interface layer, and it includes role-based access control for customer and admin personas.
 
-## Learning Laravel
+## Core functionality
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Customer storefront
+- Public landing/catalog page
+- Book detail pages
+- Category browsing
+- Best seller / collection pages
+- Customer cart flow
+- Authenticated customer route support
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Catalog management
+- Books
+- Authors
+- Categories
+- Publishers
 
-## Laravel Sponsors
+### Inventory and purchasing workflow
+The project includes a more advanced stock-management process than a basic catalog CRUD setup.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+1. Initial stock is recorded when a book is created.
+2. Stock is not edited directly in the regular book edit flow.
+3. Inventory changes go through the inventory service layer.
+4. Purchase orders can be created for stock replenishment.
+5. Purchase order receiving updates stock and records movement history.
+6. Inventory adjustments can create manual stock changes with notes.
+7. Stock movement history is tracked for auditability.
 
-### Premium Partners
+## Key business rules
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+The system enforces a controlled stock flow through `InventoryService`:
 
-## Contributing
+- Initial stock is allowed once per book
+- Negative stock is blocked
+- Purchase receipts must be processed via the purchase-order receiving workflow
+- Adjustment entries require a reason
+- Zero-quantity movements are rejected
+- Stock movement history is stored with before/after quantities
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+This keeps the business logic consistent and protects the integrity of inventory data.
 
-## Code of Conduct
+## Tech stack
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Laravel 12
+- PHP 8.2+
+- Livewire 3
+- Livewire Volt 1.7
+- Tailwind CSS
+- Spatie Laravel Permission
+- MySQL / Laravel database layer
+- PHPUnit for automated testing
 
-## Security Vulnerabilities
+## Project structure
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```text
+app/
+├── Http/
+├── Livewire/
+│   ├── Admin/
+│   │   ├── Book/
+│   │   ├── Author/
+│   │   ├── Category/
+│   │   ├── Publisher/
+│   │   ├── Inventory/
+│   │   └── PurchaseOrder/
+│   ├── Customer/
+│   └── ...
+├── Models/
+├── Services/
+├── Enums/
+└── Providers/
+
+resources/views/
+├── livewire/
+│   ├── admin/
+│   ├── customer/
+│   └── ...
+└── layouts/
+
+routes/
+├── web.php
+├── auth.php
+└── console.php
+```
+
+## Route and role flow
+
+The application is organized around Laravel routes and role guards:
+
+- Public storefront routes: home, categories, product pages, collections
+- Authenticated customer routes: cart and customer collection actions
+- Admin routes: dashboard and catalog administration
+- Role-based access is enforced using `role:User` and `role:Admin,Super Admin`
+
+Example route groups include:
+
+- `/` -> home catalog page
+- `/products/{book}` -> book detail page
+- `/cart` -> customer cart page
+- `/admin/dashboard` -> admin dashboard
+- `/admin/books` -> book administration
+- `/admin/inventory` -> inventory monitoring
+- `/admin/purchase-order` -> purchase orders
+
+## Inventory workflow details
+
+### 1. Book creation
+Books can be created with catalog data and initial inventory stock recorded as part of the book setup flow.
+
+### 2. Inventory adjustments
+Administrative inventory changes can be recorded via stock-adjustment actions with reason notes and movement tracking.
+
+### 3. Purchase order creation
+Purchase orders are created for restocking. Each line item tracks quantity ordered against book inventory needs.
+
+### 4. Purchase order receiving
+When stock arrives:
+- the order item receives quantities
+- stock is increased in the book record
+- purchase order status changes as needed
+- a stock movement entry is recorded with the receiving event
+
+### 5. Movement history
+Each inventory transaction is logged with:
+- book ID
+- user ID
+- movement type
+- quantity
+- quantity before/after
+- reference
+- notes
+
+This supports reporting and administration review.
+
+## Admin modules
+
+The app includes dedicated admin modules for:
+
+- Dashboard
+- Books
+- Authors
+- Categories
+- Publishers
+- Inventory
+- Purchase orders
+
+The inventory and purchasing modules are the most advanced and represent the business workflow the project is currently emphasizing.
+
+## Testing
+
+The project includes automated tests around key stock and receiving flows.
+
+Run tests with:
+
+```bash
+php artisan test
+```
+
+## Local setup
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/geoffembuscad0/Laravel-Local-Bookstore.git
+cd Laravel-Local-Bookstore
+```
+
+2. Install PHP dependencies
+
+```bash
+composer install
+```
+
+3. Install frontend dependencies
+
+```bash
+npm install
+```
+
+4. Configure the environment
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+5. Configure your database in `.env`
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel_local_bookstore
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+6. Run database migrations
+
+```bash
+php artisan migrate
+```
+
+7. Run the app
+
+```bash
+php artisan serve
+```
+
+and, in a separate terminal:
+
+```bash
+npm run dev
+```
+
+## Recommended development workflow
+
+For this project, the typical application workflow is:
+
+1. Create or manage catalog data (authors, publishers, categories, books)
+2. Record initial stock when books are introduced
+3. Monitor inventory levels
+4. Generate purchase orders for replenishment
+5. Receive supplier stock
+6. Review stock movement history and adjustments
+7. Validate the storefront behavior from the customer side
+
+## Notes
+
+This project is evolving around a bookstore domain that combines both storefront browsing and operational inventory management. The inventory and procurement logic is currently a central part of the application’s business rules and is more advanced than a standard demo storefront.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is intended for learning and local development use. Check the repository license and project conventions before distributing or deploying it beyond local usage.
