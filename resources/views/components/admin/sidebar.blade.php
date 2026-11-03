@@ -5,6 +5,12 @@
         'admin.category.*',
         'admin.publisher.*'
     );
+
+    $supplyChainMenuActive = request()->routeIs(
+        'admin.purchase-orders.*',
+        'admin.inventory.*',
+        'admin.suppliers.*'
+    );
 @endphp
 <aside class="w-64 bg-slate-900 text-white shadow-lg hidden md:fixed md:left-0 md:top-0 md:h-screen md:overflow-y-auto md:flex md:flex-col">
             <!-- Sidebar Header -->
@@ -49,7 +55,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" ></path>
                         </svg>
                     </button>
-                    <div id="books-menu" class="hidden space-y-1 pl-2">
+                    <div id="books-menu" class="{{ $catalogMenuActive ? '' : 'hidden' }} space-y-1 pl-2">
                         <a href="{{ route('admin.books.index') }}" class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm transition-colors
                                 {{ request()->routeIs('admin.books.index')
                                     ? 'bg-blue-600 text-white font-medium'
@@ -133,6 +139,89 @@
                             <span class="w-1 h-1 bg-blue-500 rounded-full"></span>
                             <span>Completed</span>
                         </a>
+                    </div>
+                </div>
+
+                {{-- Supply Chain Management --}}
+                <div class="space-y-1">
+
+                    <button type="button"
+                        class="w-full flex items-center space-x-3 px-4 py-3 rounded-lg font-medium transition-colors focus:outline-none {{ $supplyChainMenuActive
+                            ? 'bg-slate-800 text-white'
+                            : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}"
+                        onclick="toggleSubmenu('supply-chain-menu')"
+                        aria-expanded="{{ $supplyChainMenuActive ? 'true' : 'false' }}"
+                        aria-controls="supply-chain-menu">
+
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M20 7h-9m3-4l-3 4 3 4M4 17h9m-3-4l3 4-3 4">
+                            </path>
+                        </svg>
+
+                        <span>Supply Chain</span>
+
+                        <svg class="w-4 h-4 ml-auto transition-transform {{ $supplyChainMenuActive ? 'rotate-180' : '' }}"
+                            id="supply-chain-chevron"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24">
+
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M19 14l-7 7m0 0l-7-7m7 7V3">
+                            </path>
+                        </svg>
+                    </button>
+
+                    <div id="supply-chain-menu"
+                        class="{{ $supplyChainMenuActive ? '' : 'hidden' }} space-y-1 pl-2">
+
+                        {{-- Purchase Orders --}}
+                        <a href="{{ route('admin.purchase-orders.index') }}"
+                        class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm transition-colors
+                                {{ request()->routeIs('admin.purchase-orders.*')
+                                    ? 'bg-blue-600 text-white font-medium'
+                                    : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}"
+                        @if(request()->routeIs('admin.purchase-orders.*'))
+                            aria-current="page"
+                        @endif>
+
+                            <span class="w-1 h-1 bg-blue-500 rounded-full"></span>
+                            <span>Purchase Orders</span>
+                        </a>
+
+                        {{-- Inventory --}}
+                        <a href="{{ route('admin.inventory.index') }}"
+                        class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm transition-colors
+                                {{ request()->routeIs('admin.inventory.*')
+                                    ? 'bg-blue-600 text-white font-medium'
+                                    : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}"
+                        @if(request()->routeIs('admin.inventory.*'))
+                            aria-current="page"
+                        @endif>
+
+                            <span class="w-1 h-1 bg-blue-500 rounded-full"></span>
+                            <span>Inventory</span>
+                        </a>
+
+                        {{-- Suppliers --}}
+                        <a href="{{ route('admin.suppliers.index') }}"
+                        class="flex items-center space-x-3 px-4 py-2 rounded-lg text-sm transition-colors
+                                {{ request()->routeIs('admin.suppliers.*')
+                                    ? 'bg-blue-600 text-white font-medium'
+                                    : 'text-slate-400 hover:bg-slate-800 hover:text-white' }}"
+                        @if(request()->routeIs('admin.suppliers.*'))
+                            aria-current="page"
+                        @endif>
+
+                            <span class="w-1 h-1 bg-blue-500 rounded-full"></span>
+                            <span>Suppliers</span>
+                        </a>
+
                     </div>
                 </div>
 
