@@ -17,7 +17,10 @@ use App\Livewire\Admin\Publisher\CreatePublisher;
 use App\Livewire\Admin\Publisher\EditPublisher;
 use App\Livewire\Admin\Publisher\PublisherIndex;
 use App\Livewire\Admin\Publisher\ViewPublisher;
+use App\Livewire\Admin\Supplier\CreateSupplier;
+use App\Livewire\Admin\Supplier\EditSupplier;
 use App\Livewire\Admin\Supplier\SupplierIndex;
+use App\Livewire\Admin\Supplier\SupplierView;
 use App\Livewire\Customer\CartIndex;
 use App\Livewire\Customer\CollectionBestSeller;
 use App\Livewire\Customer\CreateCollection;
@@ -73,4 +76,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin,Super Ad
     Route::get('publisher/{publisher}/edit', EditPublisher::class)->name('publisher.edit');
 
     Route::get('suppliers', SupplierIndex::class)->name('suppliers.index');
+    Route::get('suppliers/create', CreateSupplier::class)->name('suppliers.create');
+    Route::get('suppliers/{supplier}/edit', EditSupplier::class)->name('suppliers.edit');
+    Route::get('suppliers/{supplier}', SupplierView::class)->name('suppliers.view');
 });
