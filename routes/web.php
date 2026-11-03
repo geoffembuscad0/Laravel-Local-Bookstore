@@ -28,7 +28,10 @@ use App\Livewire\Customer\CustomerCategories;
 use App\Livewire\Customer\HomePage;
 use App\Livewire\Customer\ProductIndex;
 use Illuminate\Support\Facades\Route;
-
+use App\Livewire\Admin\Inventory\InventoryIndex;
+use App\Livewire\Admin\Inventory\InventoryAdjustment;
+use App\Livewire\Admin\Inventory\InventoryMovement;
+use App\Livewire\Admin\Inventory\StockMovementView;
 // Landing page: catalog (public)
 Route::get('/', HomePage::class)->name('home');
 
@@ -79,4 +82,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin,Super Ad
     Route::get('suppliers/create', CreateSupplier::class)->name('suppliers.create');
     Route::get('suppliers/{supplier}/edit', EditSupplier::class)->name('suppliers.edit');
     Route::get('suppliers/{supplier}', SupplierView::class)->name('suppliers.view');
+    // Inventory Management
+    Route::get('inventory', InventoryIndex::class)->name('inventory.index');
+    Route::get('inventory/adjustment', InventoryAdjustment::class)->name('inventory.adjustment');
+    Route::get('inventory/movements', InventoryMovement::class)->name('inventory.movements');
+    Route::get('inventory/movements/{stockMovement}', StockMovementView::class)->name('inventory.movements.view');
 });
