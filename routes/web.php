@@ -32,7 +32,11 @@ use App\Livewire\Admin\Inventory\InventoryIndex;
 use App\Livewire\Admin\Inventory\InventoryAdjustment;
 use App\Livewire\Admin\Inventory\InventoryMovement;
 use App\Livewire\Admin\Inventory\StockMovementView;
-// Landing page: catalog (public)
+use App\Livewire\Admin\PurchaseOrder\CreatePurchaseOrder;
+use App\Livewire\Admin\PurchaseOrder\EditPurchaseOrder;
+use App\Livewire\Admin\PurchaseOrder\PurchaseOrderIndex;
+use App\Livewire\Admin\PurchaseOrder\ViewPurchaseOrder;
+
 Route::get('/', HomePage::class)->name('home');
 
 // Auth routes (login/register/etc.)
@@ -87,4 +91,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:Admin,Super Ad
     Route::get('inventory/adjustment', InventoryAdjustment::class)->name('inventory.adjustment');
     Route::get('inventory/movements', InventoryMovement::class)->name('inventory.movements');
     Route::get('inventory/movements/{stockMovement}', StockMovementView::class)->name('inventory.movements.view');
+    // Purchase Order Management
+    Route::get('purchase-orders', PurchaseOrderIndex::class)->name('purchase-orders.index');
+    Route::get('purchase-orders/create', CreatePurchaseOrder::class)->name('purchase-orders.create');
+    Route::get('purchase-orders/{purchaseOrder}/edit', EditPurchaseOrder::class)->name('purchase-orders.edit');
+    Route::get('purchase-orders/{purchaseOrder}', ViewPurchaseOrder::class)->name('purchase-orders.view');
 });
