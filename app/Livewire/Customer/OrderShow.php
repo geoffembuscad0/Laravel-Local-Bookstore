@@ -25,6 +25,9 @@ class OrderShow extends Component
 
     public function render()
     {
-        return view('livewire.customer.order-show')->layout('layouts.storefront');
+        return view('livewire.customer.order-show', [
+            'statusLabels' => Order::STATUS_LABELS,
+            'progressStatuses' => ['pending', 'processing', 'out_for_delivery', 'delivered'],
+        ])->layout('layouts.storefront');
     }
 }

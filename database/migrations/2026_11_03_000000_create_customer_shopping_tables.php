@@ -34,9 +34,11 @@ return new class extends Migration
             $table->string('customer_email');
             $table->string('customer_phone', 50);
             $table->text('shipping_address');
-            $table->string('shipping_city');
-            $table->string('shipping_postal_code', 30);
-            $table->string('shipping_country');
+            $table->string('shipping_barangay', 150);
+            $table->string('shipping_city', 100);
+            $table->string('shipping_postal_code', 4);
+            $table->string('shipping_country', 100)->default('Philippines');
+            $table->string('delivery_landmark')->nullable();
             $table->decimal('subtotal', 12, 2);
             $table->decimal('shipping_cost', 12, 2)->default(0);
             $table->decimal('total_amount', 12, 2);

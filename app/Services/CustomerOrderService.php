@@ -28,7 +28,7 @@ class CustomerOrderService
                 ->whereHas('product', fn ($query) => $query->where('is_active', true))
                 ->lockForUpdate()->get()->keyBy('id');
 
-            $subtotal = 0;
+            $subtotalCents = 0;
             foreach ($items as $item) {
                 $book = $books->get($item->book_id);
                 if (! $book || $book->stock < $item->quantity) {
@@ -36,9 +36,9 @@ class CustomerOrderService
                         'cart' => 'One or more cart items are no longer available in the requested quantity. Please review your cart.',
                     ]);
                 }
-                $subtotal += (int) round(((float) ($book->discount_price ?? $book->price)) * 100) * $item->quantity;
+                $subtotalCents += (int) round(((float) ($book->discount_price ?? $book->price)) * 100) * $item->quantity;
             }
-            $subtotal = $subtotal / 100;
+            $subtotal = $subtotalCents / 100;
 
             $order = Order::create([
                 'order_number' => $this->newOrderNumber(),
@@ -50,9 +50,11 @@ class CustomerOrderService
                 'customer_email' => $user->email,
                 'customer_phone' => $shipping['customer_phone'],
                 'shipping_address' => $shipping['shipping_address'],
+                'shipping_barangay' => $shipping['shipping_barangay'],
                 'shipping_city' => $shipping['shipping_city'],
                 'shipping_postal_code' => $shipping['shipping_postal_code'],
-                'shipping_country' => $shipping['shipping_country'],
+                'shipping_country' => 'Philippines',
+                'delivery_landmark' => $shipping['delivery_landmark'] ?: null,
                 'subtotal' => number_format($subtotal, 2, '.', ''),
                 'shipping_cost' => '0.00',
                 'total_amount' => number_format($subtotal, 2, '.', ''),
@@ -100,7 +102,7 @@ class CustomerOrderService
         DB::transaction(function () use ($order, $user) {
             $order = Order::query()->where('user_id', $user->id)->lockForUpdate()->findOrFail($order->id);
             if ($order->status !== 'pending') {
-                throw ValidationException::withMessages(['order' => 'Only pending orders can be cancelled.']);
+                throw ValidationException::withMessages(['order' => 'Only orders that are still pending can be cancelled. Please contact the bookstore if you need help with an order already being prepared.']);
             }
 
             foreach ($order->items as $item) {

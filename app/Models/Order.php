@@ -8,13 +8,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
-    public const STATUSES = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
+    public const STATUSES = ['pending', 'processing', 'out_for_delivery', 'delivered', 'cancelled'];
+
+    public const STATUS_LABELS = [
+        'pending' => 'Order received',
+        'processing' => 'Preparing your order',
+        'out_for_delivery' => 'Out for delivery',
+        'delivered' => 'Delivered',
+        'cancelled' => 'Cancelled',
+    ];
 
     protected $fillable = [
         'order_number', 'user_id', 'status', 'payment_method', 'payment_status',
         'customer_name', 'customer_email', 'customer_phone', 'shipping_address',
-        'shipping_city', 'shipping_postal_code', 'shipping_country', 'subtotal',
-        'shipping_cost', 'total_amount', 'customer_notes', 'placed_at',
+        'shipping_barangay', 'shipping_city', 'shipping_postal_code', 'shipping_country',
+        'delivery_landmark', 'subtotal', 'shipping_cost', 'total_amount',
+        'customer_notes', 'placed_at',
     ];
 
     protected $casts = [
@@ -32,5 +41,10 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return self::STATUS_LABELS[$this->status] ?? ucfirst(str_replace('_', ' ', $this->status));
     }
 }

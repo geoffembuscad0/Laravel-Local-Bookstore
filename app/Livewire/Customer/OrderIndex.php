@@ -13,6 +13,10 @@ class OrderIndex extends Component
     public function render()
     {
         $orders = auth()->user()->orders()->withCount('items')->latest()->paginate(10);
-        return view('livewire.customer.order-index', compact('orders'))->layout('layouts.storefront');
+
+        return view('livewire.customer.order-index', [
+            'orders' => $orders,
+            'statusLabels' => Order::STATUS_LABELS,
+        ])->layout('layouts.storefront');
     }
 }
