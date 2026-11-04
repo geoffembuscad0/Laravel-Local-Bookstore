@@ -47,3 +47,12 @@ This is a personal development project intended to demonstrate practical Laravel
 The goal is to build a functional online bookstore with a manageable administrative workflow, rather than an enterprise-level inventory or supply-chain platform.
 
 The implementation prioritizes maintainable code, clear separation of responsibilities, and realistic business rules appropriate for a small bookstore.
+
+---
+
+## Project Overview
+
+![Admin verview](docs/image-admin-book-mgt.png)
+![Catalog overview](docs/image-catalog-cart.png)
+![Index overview](docs/image-index.png)
+![Product overview](docs/image-product-view.png)
