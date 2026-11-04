@@ -99,46 +99,79 @@
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        @forelse($products ?? [] as $product)
-          <article class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden flex flex-col">
-            <a href="{{ route('product.show', $product->slug) }}" class="block aspect-[3/4] bg-gray-100 overflow-hidden">
-              <img src="{{ $product->cover_url ?? asset('images/book-placeholder.png') }}" alt="{{ $product->title }}" class="w-full h-full object-cover">
-            </a>
-
-            <div class="p-4 flex-1 flex flex-col">
-              <h3 class="text-sm font-medium">
-                <a href="{{ route('product.show', $product->slug) }}" class="hover:underline">
-                  {{ Str::limit($product->title, 60) }}
-                </a>
-              </h3>
-              <p class="text-xs text-gray-500 mt-1 flex-1">{{ Str::limit($product->author ?? 'Unknown author', 60) }}</p>
-
-              <div class="mt-4 flex items-center justify-between">
-                <div>
-                  <span class="text-lg font-semibold">${{ number_format($product->price, 2) }}</span>
-                  @if($product->old_price)
-                    <span class="text-sm text-gray-400 line-through ml-2">${{ number_format($product->old_price, 2) }}</span>
+        @forelse($products as $product)
+          <article class="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+              <a href="{{ route('product.show', $product->slug) }}"
+                class="block aspect-[3/4] overflow-hidden bg-gray-100">
+                  @if ($product->cover_image)
+                      <img
+                          src="{{ asset('storage/' . $product->cover_image) }}"
+                          alt="{{ $product->title }}"
+                          class="h-full w-full object-cover transition duration-300 hover:scale-105"
+                      >
+                  @else
+                      <div class="flex h-full items-center justify-center text-sm text-gray-400">
+                          No cover available
+                      </div>
                   @endif
-                </div>
+              </a>
 
-                <div class="flex items-center gap-2">
-                  <button wire:click="addToCart({{ $product->id }})"
-                          class="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 6h13"/>
-                    </svg>
-                    Add
-                  </button>
-                </div>
+              <div class="flex flex-1 flex-col p-4">
+                  <h3 class="text-sm font-semibold">
+                      <a href="{{ route('product.show', $product->slug) }}"
+                        class="hover:text-indigo-700">
+                          {{ Str::limit($product->title, 60) }}
+                      </a>
+                  </h3>
+
+                  <p class="mt-1 flex-1 text-xs text-gray-500">
+                      {{ $product->primaryAuthor?->name ?? 'Unknown author' }}
+                  </p>
+
+                  <div class="mt-4">
+                      @if ($product->discount_price)
+                          <span class="text-lg font-bold text-indigo-700">
+                              ₱{{ number_format((float) $product->discount_price, 2) }}
+                          </span>
+                          <span class="ml-1 text-sm text-gray-400 line-through">
+                              ₱{{ number_format((float) $product->price, 2) }}
+                          </span>
+                      @else
+                          <span class="text-lg font-bold text-indigo-700">
+                              ₱{{ number_format((float) $product->price, 2) }}
+                          </span>
+                      @endif
+                  </div>
+
+                  <div class="mt-4">
+                      @if ($product->stock > 0)
+                          @if (auth()->check() && auth()->user()->hasRole('User'))
+                              <button
+                                  wire:click="addToCart({{ $product->id }})"
+                                  wire:loading.attr="disabled"
+                                  class="w-full rounded-lg bg-indigo-700 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-800 disabled:opacity-60"
+                              >
+                                  Add to cart
+                              </button>
+                          @elseif (auth()->guest())
+                              <a href="{{ route('login') }}"
+                                class="block rounded-lg border border-indigo-700 px-3 py-2 text-center text-sm font-medium text-indigo-700 hover:bg-indigo-50">
+                                  Sign in to purchase
+                              </a>
+                          @endif
+                      @else
+                          <button disabled
+                                  class="w-full cursor-not-allowed rounded-lg bg-gray-200 px-3 py-2 text-sm font-medium text-gray-500">
+                              Out of stock
+                          </button>
+                      @endif
+                  </div>
               </div>
-            </div>
           </article>
         @empty
-          @for($i=0;$i<8;$i++)
-            <div class="bg-white border border-gray-200 rounded-lg shadow-sm h-64 flex items-center justify-center text-gray-400">
-              No products yet
-            </div>
-          @endfor
+          <div class="col-span-full rounded-lg border bg-white py-12 text-center text-gray-500">
+              No books are currently available.
+          </div>
         @endforelse
       </div>
 

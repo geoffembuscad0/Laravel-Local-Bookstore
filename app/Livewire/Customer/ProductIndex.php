@@ -29,6 +29,9 @@ class ProductIndex extends Component
 
     public function render()
     {
-        return view('livewire.customer.product-index')->layout('layouts.storefront');
+        $cartCount = auth()->check() ? auth()->user()->cart?->items()->sum('quantity') ?? 0 : 0;
+
+        return view('livewire.customer.product-index', compact('cartCount'))
+            ->layout('layouts.storefront');
     }
 }

@@ -58,17 +58,27 @@ class Checkout extends Component
         return $this->redirectRoute('orders.show', $order);
     }
 
-    public function render()
-    {
-        $cart = Cart::query()->where('user_id', auth()->id())->with('items.book')->first();
+    public function render() {
+        $cart = Cart::query()
+            ->where('user_id', auth()->id())
+            ->with('items.book')
+            ->first();
+
         if (! $cart || $cart->items->isEmpty()) {
             return redirect()->route('cart.index');
         }
 
-        $subtotal = $cart->items->sum(fn ($item) => (float) ($item->book?->discount_price ?? $item->book?->price ?? 0) * $item->quantity);
+        $cartCount = $cart->items->sum('quantity');
+
+        $subtotal = $cart->items->sum(
+            fn ($item) => (float) (
+                $item->book?->discount_price ?? $item->book?->price ?? 0
+            ) * $item->quantity
+        );
 
         return view('livewire.customer.checkout', [
             'cart' => $cart,
+            'cartCount' => $cartCount,
             'subtotal' => $subtotal,
             'metroManilaCities' => self::METRO_MANILA_CITIES,
         ])->layout('layouts.storefront');

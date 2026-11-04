@@ -14,21 +14,6 @@ class CartIndex extends Component
         session()->flash('success', 'Book added to your cart.');
     }
 
-    public function updateQuantity(int $itemId, int $quantity): void
-    {
-        $item = $this->cart()->items()->with('book.product')->findOrFail($itemId);
-        if ($quantity < 1) {
-            $item->delete();
-            return;
-        }
-        abort_unless($item->book && $item->book->product?->is_active, 404);
-        if ($quantity > $item->book->stock) {
-            $this->addError('quantity.' . $itemId, 'The requested quantity exceeds available stock.');
-            return;
-        }
-        $item->update(['quantity' => $quantity]);
-    }
-
     public function remove(int $itemId): void
     {
         $this->cart()->items()->whereKey($itemId)->delete();
@@ -38,14 +23,66 @@ class CartIndex extends Component
     {
         return Cart::firstOrCreate(['user_id' => auth()->id()]);
     }
+    public function updateQuantity(int $itemId, int $quantity): void
+    {
+        $this->resetErrorBag('quantity.' . $itemId);
+
+        $item = $this->cart()
+            ->items()
+            ->with('book.product')
+            ->findOrFail($itemId);
+
+        if ($quantity < 1) {
+            $item->delete();
+            return;
+        }
+
+        abort_unless($item->book && $item->book->product?->is_active, 404);
+
+        if ($quantity > $item->book->stock) {
+            $this->addError(
+                'quantity.' . $itemId,
+                'The requested quantity exceeds available stock.'
+            );
+
+            return;
+        }
+
+        $item->update(['quantity' => $quantity]);
+    }
 
     public function render()
     {
-        $cart = $this->cart()->load('items.book.primaryAuthor', 'items.book.product');
-        $cartCount = $cart->items->sum('quantity');
-        $subtotal = $cart->items->sum(fn ($item) => (float) ($item->book?->discount_price ?? $item->book?->price ?? 0) * $item->quantity);
+        $cart = $this->cart()->load(
+            'items.book.primaryAuthor',
+            'items.book.product'
+        );
 
-        return view('livewire.customer.cart-index', compact('cart', 'cartCount', 'subtotal'))
-            ->layout('layouts.storefront');
+        $cartCount = $cart->items->sum('quantity');
+
+        $hasUnavailableItems = $cart->items->contains(function ($item) {
+            return ! $item->book
+                || ! $item->book->product?->is_active
+                || $item->book->stock < $item->quantity;
+        });
+
+        $subtotal = $cart->items->sum(function ($item) {
+            $book = $item->book;
+
+            if (! $book || ! $book->product?->is_active) {
+                return 0;
+            }
+
+            $unitPrice = (float) ($book->discount_price ?? $book->price);
+
+            return $unitPrice * $item->quantity;
+        });
+
+        return view('livewire.customer.cart-index', compact(
+            'cart',
+            'cartCount',
+            'subtotal',
+            'hasUnavailableItems'
+        ))->layout('layouts.storefront');
     }
 }

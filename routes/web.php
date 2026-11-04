@@ -21,16 +21,6 @@ use App\Livewire\Admin\Supplier\CreateSupplier;
 use App\Livewire\Admin\Supplier\EditSupplier;
 use App\Livewire\Admin\Supplier\SupplierIndex;
 use App\Livewire\Admin\Supplier\SupplierView;
-use App\Livewire\Customer\CartIndex;
-use App\Livewire\Customer\Checkout;
-use App\Livewire\Customer\CollectionBestSeller;
-use App\Livewire\Customer\CreateCollection;
-use App\Livewire\Customer\CustomerCategories;
-use App\Livewire\Customer\HomePage;
-use App\Livewire\Customer\OrderIndex;
-use App\Livewire\Customer\OrderShow;
-use App\Livewire\Customer\ProductIndex;
-use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin\Inventory\InventoryIndex;
 use App\Livewire\Admin\Inventory\InventoryAdjustment;
 use App\Livewire\Admin\Inventory\InventoryMovement;
@@ -40,11 +30,23 @@ use App\Livewire\Admin\PurchaseOrder\EditPurchaseOrder;
 use App\Livewire\Admin\PurchaseOrder\PurchaseOrderIndex;
 use App\Livewire\Admin\PurchaseOrder\ViewPurchaseOrder;
 
+use App\Livewire\Customer\CartIndex;
+use App\Livewire\Customer\Checkout;
+use App\Livewire\Customer\CollectionBestSeller;
+use App\Livewire\Customer\CreateCollection;
+use App\Livewire\Customer\CollectionIndex;
+use App\Livewire\Customer\CustomerCategories;
+use App\Livewire\Customer\HomePage;
+use App\Livewire\Customer\OrderIndex;
+use App\Livewire\Customer\OrderShow;
+use App\Livewire\Customer\ProductIndex;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', HomePage::class)->name('home');
 
 require __DIR__.'/auth.php';
 
-Route::get('collection', CartIndex::class)->name('collections.index');
+Route::get('collection', CollectionIndex::class)->name('collections.index');
 Route::get('collection/bestsellers', CollectionBestSeller::class)->name('collections.bestsellers');
 Route::redirect('/categories', '/')->name('categories');
 Route::get('categories/{category:slug}', CustomerCategories::class)->name('category.view');
