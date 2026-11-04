@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             AuthorsAndPublishersSeeder::class,
             BooksSeeder::class,
-            ProductSeeder::class,
+            ProductsSeeder::class,
             BookCategorySeeder::class,
             PermissionSeeder::class,
             RolesAndUsersSeeder::class,
