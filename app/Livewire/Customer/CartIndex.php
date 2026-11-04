@@ -4,10 +4,11 @@ namespace App\Livewire\Customer;
 
 use App\Models\Cart;
 use Livewire\Component;
+use App\Services\CartService;
 
 class CartIndex extends Component
 {
-    public function addToCart(int $bookId, \\App\Services\CartService $cartService): void
+    public function addToCart(int $bookId, CartService $cartService): void
     {
         $cartService->add(auth()->id(), $bookId);
         session()->flash('success', 'Book added to your cart.');
