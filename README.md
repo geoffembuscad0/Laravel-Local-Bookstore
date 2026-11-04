@@ -4,7 +4,7 @@ A Laravel 12 online bookstore project built from scratch. The application combin
 
 This project is being developed as a practical implementation of an online bookstore, with an emphasis on clean Laravel architecture and realistic bookstore management workflows.
 
-> **Current development focus:** The admin-side catalog and basic supply-chain management features are implemented. The customer-facing shopping experience is still under development. Payment integration is not yet included.
+> **Current development focus:** The admin-side catalog and basic supply-chain management features are implemented. The customer-facing shopping experience is still under development. Payment integ[...]
 
 ---
 
@@ -650,17 +650,21 @@ The project is being developed incrementally.
 - [x] Purchase Order Creation and Management
 - [x] Partial Purchase Order Receiving
 
-### Upcoming Customer-facing Scope
+### Customer-facing Scope
 
-- [ ] Customer Book Catalog
-- [ ] Book Details and Browsing
-- [ ] Category-based Book Browsing
-- [ ] Shopping Cart
-- [ ] Customer Shopping Flow
-- [ ] Checkout Workflow
-- [ ] Order Management
+- [x] Customer Book Catalog
+- [x] Book Details and Browsing
+- [x] Category-based Book Browsing
+- [x] Shopping Cart
+- [x] Customer Shopping Flow
+- [x] Checkout Workflow — Cash on Delivery (COD)
+- [x] Customer Order History and Details
+- [x] Metro Manila delivery address validation
+- [x] Customer order status display and pending-order cancellation
 
-Payment gateway integration is not currently planned for this development stage.
+Customer checkout is limited to Metro Manila and accepts Cash on Delivery only. Orders are unpaid when placed; payment is due in cash upon delivery. There is no payment gateway integration.
+
+Customer order states shown to customers are: Order received, Preparing your order, Out for delivery, Delivered, and Cancelled. Customers may cancel only while an order is pending.
 
 ---
 
