@@ -118,7 +118,7 @@
 
                         @if ($product->cover_image)
                             <img
-                                src="{{ asset('storage/' . $product->cover_image) }}"
+                                src="{{ Storage::disk(config('books.cover_disk'))->url($book->cover_image) }}"
                                 alt="{{ $product->title }}"
                                 class="h-full w-full object-cover transition duration-300 hover:scale-105"
                             >

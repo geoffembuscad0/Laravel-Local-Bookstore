@@ -15,7 +15,7 @@
         <!-- Left Column -->
         <div>
             @if ($book->cover_image)
-                <img src="{{ asset('storage/' . $book->cover_image) }}" alt="{{ $book->title }}" class="w-full rounded mb-6">
+                <img src="{{ Storage::disk(config('books.cover_disk'))->url($book->cover_image) }}" alt="{{ $book->title }}" class="w-full rounded mb-6">
             @else
                 <div class="w-full h-64 bg-gray-200 rounded mb-6 flex items-center justify-center text-gray-400">
                     No Cover Image

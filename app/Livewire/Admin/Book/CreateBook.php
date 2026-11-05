@@ -11,9 +11,15 @@ use App\Enums\StockMovementType;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Validate;
+use Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Throwable;
 
 class CreateBook extends Component
 {
+    use WithFileUploads;
+
     #[Validate('required|string|max:255')]
     public string $title = '';
 
@@ -50,50 +56,70 @@ class CreateBook extends Component
     #[Validate('nullable|exists:authors,id')]
     public ?int $primary_author_id = null;
 
+    #[Validate('nullable|image|max:2048')]
+    public $cover_image = null;
+
     public function save()
     {
         $this->authorize('create', Book::class);
+
         $this->validate();
 
-        $book = DB::transaction(function () {
+        // Upload the cover image when provided.
+        $coverImagePath = $this->storeCoverImage();
 
-            // Step 1: Create the Book
-            $book = Book::create([
-                'title' => $this->title,
-                'slug' => Str::slug($this->title),
-                'isbn' => $this->isbn ?: null,
-                'description' => $this->description ?: null,
-                'price' => $this->price,
-                'discount_price' => $this->discount_price,
-                'stock' => $this->stock,
-                'pages' => $this->pages,
-                'language' => $this->language ?: null,
-                'publication_date' => $this->publication_date,
-                'sku' => $this->sku ?: null,
-                'publisher_id' => $this->publisher_id,
-                'primary_author_id' => $this->primary_author_id,
-                'stock' => 0,
-            ]);
+        try {
+            $book = DB::transaction(function () use ($coverImagePath) {
 
-            // Step 2: Automatically create the associated Product
-            $this->createProduct($book);
-            if ($this->stock > 0) {
-                app(InventoryService::class)->recordStockMovement(
-                    book: $book,
-                    quantity: $this->stock,
-                    userId: auth()->id(),
-                    type: StockMovementType::INITIAL_STOCK,
-                    notes: 'Initial stock upon book creation.',
-                );
+                $book = Book::create([
+                    'title' => $this->title,
+                    'slug' => Str::slug($this->title),
+                    'isbn' => $this->isbn ?: null,
+                    'description' => $this->description ?: null,
+                    'price' => $this->price,
+                    'discount_price' => $this->discount_price,
+                    'stock' => 0,
+                    'pages' => $this->pages,
+                    'language' => $this->language ?: null,
+                    'publication_date' => $this->publication_date,
+                    'cover_image' => $coverImagePath,
+                    'sku' => $this->sku ?: null,
+                    'publisher_id' => $this->publisher_id,
+                    'primary_author_id' => $this->primary_author_id,
+                ]);
+
+                // Automatically create the associated Product.
+                $this->createProduct($book);
+
+                if ($this->stock > 0) {
+                    app(InventoryService::class)->recordStockMovement(
+                        book: $book,
+                        quantity: $this->stock,
+                        userId: auth()->id(),
+                        type: StockMovementType::INITIAL_STOCK,
+                        notes: 'Initial stock upon book creation.',
+                    );
+                }
+
+                return $book;
+            });
+
+        } catch (Throwable $exception) {
+
+            // Remove the uploaded image if database operations fail.
+            if ($coverImagePath) {
+                Storage::disk(config('books.cover_disk'))
+                    ->delete($coverImagePath);
             }
 
-            return $book;
-        });
+            throw $exception;
+        }
 
         session()->flash('success', 'Book created successfully');
+
         redirect()->route('admin.books.view', $book);
     }
-    private function createProduct(Book $book): void
+    private function createProduct(Book $book)
     {
         $book->product()->create([
             'is_active' => true,
@@ -107,5 +133,38 @@ class CreateBook extends Component
             'publishers' => Publisher::all(),
             'authors' => Author::all(),
         ])->layout('layouts.admin');
+    }
+    private function generateCoverFilename()
+    {
+        $extension = $this->cover_image->getClientOriginalExtension();
+
+        $filename = pathinfo(
+            $this->cover_image->getClientOriginalName(),
+            PATHINFO_FILENAME
+        );
+
+        // Replace spaces and other non-alphanumeric characters with underscores.
+        $filename = preg_replace('/[^A-Za-z0-9_-]+/', '_', $filename);
+
+        // Remove underscores from the beginning and end.
+        $filename = trim($filename, '_');
+
+        return 'book_' . $this->book->id . '_' . $filename . '.' . strtolower($extension);
+    }
+    private function storeCoverImage()
+    {
+        if (!$this->cover_image) {
+            return null;
+        }
+
+        $directory = public_path('images/books/covers');
+
+        File::ensureDirectoryExists($directory);
+
+        $filename = $this->generateCoverFilename();
+
+        $this->cover_image->move($directory, $filename);
+
+        return 'images/books/covers/' . $filename;
     }
 }
