@@ -6,7 +6,7 @@
       <div class="container mx-auto px-4 py-4 flex items-center justify-between">
         <a href="{{ route('home') }}" class="flex items-center gap-3">
           <img src="{{ asset('images/logo.svg') }}" alt="Bookstore" class="w-10 h-10">
-          <span class="font-bold text-xl tracking-tight">Local Bookstore</span>
+          <span class="text-orange-800 font-bold text-xl tracking-tight">Local Bookstore</span>
         </a>
 
         <form class="flex-1 mx-6" wire:submit.prevent>
@@ -14,8 +14,8 @@
           <div class="relative">
             <input id="search" type="search" wire:model.debounce.300ms="search"
                    placeholder="Search books, authors, ISBN..."
-                   class="w-full border border-gray-200 rounded-full py-2 pl-4 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            <button type="button" class="absolute right-1 top-1/2 -translate-y-1/2 bg-indigo-600 text-white rounded-full p-2 hover:bg-indigo-700"
+                   class="w-full border border-gray-200 rounded-full py-2 pl-4 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <button type="button" class="absolute right-1 top-1/2 -translate-y-1/2 bg-orange-600 text-white rounded-full p-2 hover:bg-orange-700"
                     aria-label="Search">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M10.5 18A7.5 7.5 0 1010.5 3a7.5 7.5 0 000 15z"/>
@@ -30,7 +30,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 6h13"/>
             </svg>
             <span class="hidden sm:inline">Cart</span>
-            <span class="ml-1 inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium bg-indigo-50 text-indigo-700 rounded-full">
+            <span class="ml-1 inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium bg-orange-50 text-orange-700 rounded-full">
               {{ $cartCount ?? 0 }}
             </span>
           </a>
@@ -39,7 +39,7 @@
             <a href="{{ route('login') }}" class="text-sm text-gray-700 hover:underline">Sign in</a>
           @else
             <div x-data="{ open: false }" class="relative">
-              <button type="button" @click="open = !open" class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" aria-label="User menu">
+              <button type="button" @click="open = !open" class="w-10 h-10 rounded-full bg-orange-600 text-white flex items-center justify-center hover:bg-orange-700 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2" aria-label="User menu">
                 <i class="fas fa-user text-sm"></i>
               </button>
 
@@ -63,17 +63,17 @@
       </div>
     </header>
   @endunless
-  <section class="bg-gradient-to-r from-indigo-600 to-indigo-500 text-white">
+  <section class="bg-gradient-to-r from-orange-600 to-orange-500 text-white">
     <div class="container mx-auto px-4 py-20 flex flex-col lg:flex-row items-center gap-12">
       <div class="lg:w-1/2">
         <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">
           Discover your next favorite book
         </h1>
-        <p class="mt-4 text-indigo-100 max-w-xl">
+        <p class="mt-4 text-orange-100 max-w-xl">
           Hand-picked titles from local authors and bestsellers. Fast shipping and secure checkout.
         </p>
         <div class="mt-8 flex gap-3">
-          <a href="#catalog" class="inline-flex items-center px-6 py-3 bg-white text-indigo-600 rounded-lg shadow hover:bg-gray-100 font-semibold">
+          <a href="#catalog" class="inline-flex items-center px-6 py-3 bg-white text-orange-600 rounded-lg shadow hover:bg-gray-100 font-semibold">
             Browse catalog
           </a>
           <a href="{{ route('collections.index') }}" class="inline-flex items-center rounded-lg border border-white/30 px-6 py-3 text-white hover:bg-white/10">
@@ -128,7 +128,7 @@
                 class="block aspect-[3/4] overflow-hidden bg-gray-100">
                   @if ($product->cover_image)
                       <img
-                          src="{{ Storage::disk(config('books.cover_disk'))->url($book->cover_image) }}"
+                          src="{{ Storage::disk(config('books.cover_disk'))->url($product->cover_image) }}"
                           alt="{{ $product->title }}"
                           class="h-full w-full object-cover transition duration-300 hover:scale-105"
                       >
@@ -142,7 +142,7 @@
               <div class="flex flex-1 flex-col p-4">
                   <h3 class="text-sm font-semibold">
                       <a href="{{ route('product.show', $product->slug) }}"
-                        class="hover:text-indigo-700">
+                        class="hover:text-orange-700">
                           {{ Str::limit($product->title, 60) }}
                       </a>
                   </h3>
@@ -153,14 +153,14 @@
 
                   <div class="mt-4">
                       @if ($product->discount_price)
-                          <span class="text-lg font-bold text-indigo-700">
+                          <span class="text-lg font-bold text-orange-700">
                               ₱{{ number_format((float) $product->discount_price, 2) }}
                           </span>
                           <span class="ml-1 text-sm text-gray-400 line-through">
                               ₱{{ number_format((float) $product->price, 2) }}
                           </span>
                       @else
-                          <span class="text-lg font-bold text-indigo-700">
+                          <span class="text-lg font-bold text-orange-700">
                               ₱{{ number_format((float) $product->price, 2) }}
                           </span>
                       @endif
@@ -172,13 +172,13 @@
                               <button
                                   wire:click="addToCart({{ $product->id }})"
                                   wire:loading.attr="disabled"
-                                  class="w-full rounded-lg bg-indigo-700 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-800 disabled:opacity-60"
+                                  class="w-full rounded-lg bg-orange-700 px-3 py-2 text-sm font-medium text-white hover:bg-orange-800 disabled:opacity-60"
                               >
                                   Add to cart
                               </button>
                           @elseif (auth()->guest())
                               <a href="{{ route('login') }}"
-                                class="block rounded-lg border border-indigo-700 px-3 py-2 text-center text-sm font-medium text-indigo-700 hover:bg-indigo-50">
+                                class="block rounded-lg border border-orange-700 px-3 py-2 text-center text-sm font-medium text-orange-700 hover:bg-orange-50">
                                   Sign in to purchase
                               </a>
                           @endif

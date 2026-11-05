@@ -1,16 +1,16 @@
 <div class="min-h-screen bg-slate-50 text-slate-800">
     <header class="border-b bg-white">
         <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-            <a href="{{ route('home') }}" class="text-xl font-bold text-indigo-700">Local Bookstore</a>
+            <a href="{{ route('home') }}" class="text-xl font-bold text-orange-700">Local Bookstore</a>
             <div class="flex items-center gap-4 text-sm">
-                <a href="{{ route('home') }}" class="hover:text-indigo-700">Shop</a>
-                <a href="{{ route('cart.index') }}" class="hover:text-indigo-700">Cart ({{ $cartCount }})</a>
-                <a href="{{ route('orders.index') }}" class="font-medium text-indigo-700">My orders</a>
+                <a href="{{ route('home') }}" class="hover:text-orange-700">Shop</a>
+                <a href="{{ route('cart.index') }}" class="hover:text-orange-700">Cart ({{ $cartCount }})</a>
+                <a href="{{ route('orders.index') }}" class="font-medium text-orange-700">My orders</a>
             </div>
         </nav>
     </header>
     <main class="mx-auto max-w-6xl px-4 py-8">
-        <div class="mb-6"><a href="{{ route('cart.index') }}" class="text-sm text-indigo-700">← Back to cart</a><h1 class="mt-3 text-3xl font-bold">Delivery details</h1><p class="mt-1 text-slate-600">We currently deliver within Metro Manila only. Payment is cash on delivery.</p></div>
+        <div class="mb-6"><a href="{{ route('cart.index') }}" class="text-sm text-orange-700">← Back to cart</a><h1 class="mt-3 text-3xl font-bold">Delivery details</h1><p class="mt-1 text-slate-600">We currently deliver within Metro Manila only. Payment is cash on delivery.</p></div>
         @if ($errors->has('cart')) <div class="mb-4 rounded-lg bg-red-50 p-4 text-red-700">{{ $errors->first('cart') }}</div> @endif
         <form wire:submit="placeOrder" class="grid gap-8 lg:grid-cols-[1fr_360px]">
             <section class="space-y-5 rounded-xl border bg-white p-6 shadow-sm">
@@ -31,7 +31,7 @@
                 <h2 class="text-lg font-semibold">Order summary</h2>
                 <ul class="my-4 space-y-3 text-sm">@foreach ($cart->items as $item)<li class="flex justify-between gap-3"><span>{{ $item->book?->title }} × {{ $item->quantity }}</span><span>₱{{ number_format((float) ($item->book?->discount_price ?? $item->book?->price ?? 0) * $item->quantity, 2) }}</span></li>@endforeach</ul>
                 <div class="space-y-2 border-t pt-4 text-sm"><div class="flex justify-between"><span>Subtotal</span><span>₱{{ number_format($subtotal, 2) }}</span></div><div class="flex justify-between"><span>Local delivery</span><span>Free</span></div><div class="flex justify-between border-t pt-3 text-base font-bold"><span>Total due on delivery</span><span>₱{{ number_format($subtotal, 2) }}</span></div></div>
-                <button type="submit" wire:loading.attr="disabled" class="mt-6 w-full rounded-lg bg-indigo-700 px-4 py-3 font-semibold text-white hover:bg-indigo-800 disabled:opacity-60">Place COD order</button>
+                <button type="submit" wire:loading.attr="disabled" class="mt-6 w-full rounded-lg bg-orange-700 px-4 py-3 font-semibold text-white hover:bg-orange-800 disabled:opacity-60">Place COD order</button>
             </aside>
         </form>
     </main>

@@ -1,16 +1,16 @@
 <div class="min-h-screen bg-gray-50 text-gray-900">
     <header class="border-b bg-white shadow-sm">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-            <a href="{{ route('home') }}" class="text-xl font-bold text-indigo-700">
+            <a href="{{ route('home') }}" class="text-xl font-bold text-orange-700">
                 Local Bookstore
             </a>
 
             <div class="flex items-center gap-5 text-sm">
-                <a href="{{ route('home') }}" class="hover:text-indigo-700">Shop</a>
-                <a href="{{ route('cart.index') }}" class="hover:text-indigo-700">
+                <a href="{{ route('home') }}" class="hover:text-orange-700">Shop</a>
+                <a href="{{ route('cart.index') }}" class="hover:text-orange-700">
                     Cart ({{ $cartCount }})
                 </a>
-                <a href="{{ route('orders.index') }}" class="hover:text-indigo-700">
+                <a href="{{ route('orders.index') }}" class="hover:text-orange-700">
                     My orders
                 </a>
             </div>
@@ -19,7 +19,7 @@
 
     <main class="mx-auto max-w-7xl px-4 py-10">
         <a href="{{ route('home') }}"
-           class="text-sm text-indigo-700 hover:underline">
+           class="text-sm text-orange-700 hover:underline">
             ← Back to catalog
         </a>
 
@@ -48,7 +48,7 @@
                 <div class="mb-3 flex flex-wrap gap-2">
                     @foreach ($book->categories as $category)
                         <a href="{{ route('category.view', $category->slug) }}"
-                           class="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium text-indigo-700">
+                           class="rounded-full bg-orange-50 px-3 py-1 text-xs font-medium text-orange-700">
                             {{ $category->name }}
                         </a>
                     @endforeach
@@ -64,14 +64,14 @@
 
                 <div class="mt-5">
                     @if ($book->discount_price)
-                        <span class="text-3xl font-bold text-indigo-700">
+                        <span class="text-3xl font-bold text-orange-700">
                             ₱{{ number_format((float) $book->discount_price, 2) }}
                         </span>
                         <span class="ml-2 text-lg text-gray-400 line-through">
                             ₱{{ number_format((float) $book->price, 2) }}
                         </span>
                     @else
-                        <span class="text-3xl font-bold text-indigo-700">
+                        <span class="text-3xl font-bold text-orange-700">
                             ₱{{ number_format((float) $book->price, 2) }}
                         </span>
                     @endif
@@ -149,14 +149,14 @@
                                 <button
                                     type="submit"
                                     wire:loading.attr="disabled"
-                                    class="rounded-lg bg-indigo-700 px-6 py-3 font-semibold text-white hover:bg-indigo-800 disabled:opacity-60"
+                                    class="rounded-lg bg-orange-700 px-6 py-3 font-semibold text-white hover:bg-orange-800 disabled:opacity-60"
                                 >
                                     Add to cart
                                 </button>
                             </form>
                         @elseif (auth()->guest())
                             <a href="{{ route('login') }}"
-                               class="inline-block rounded-lg bg-indigo-700 px-6 py-3 font-semibold text-white hover:bg-indigo-800">
+                               class="inline-block rounded-lg bg-orange-700 px-6 py-3 font-semibold text-white hover:bg-orange-800">
                                 Sign in to add to cart
                             </a>
                         @endif

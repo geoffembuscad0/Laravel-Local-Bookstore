@@ -1,16 +1,16 @@
 <div class="min-h-screen bg-gray-50 text-gray-900">
     <header class="border-b bg-white shadow-sm">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-            <a href="{{ route('home') }}" class="text-xl font-bold text-indigo-700">
+            <a href="{{ route('home') }}" class="text-xl font-bold text-orange-700">
                 Local Bookstore
             </a>
 
             <div class="flex items-center gap-5 text-sm">
-                <a href="{{ route('home') }}" class="hover:text-indigo-700">Continue shopping</a>
-                <a href="{{ route('cart.index') }}" class="font-semibold text-indigo-700">
+                <a href="{{ route('home') }}" class="hover:text-orange-700">Continue shopping</a>
+                <a href="{{ route('cart.index') }}" class="font-semibold text-orange-700">
                     Cart ({{ $cartCount }})
                 </a>
-                <a href="{{ route('orders.index') }}" class="hover:text-indigo-700">
+                <a href="{{ route('orders.index') }}" class="hover:text-orange-700">
                     My orders
                 </a>
             </div>
@@ -45,7 +45,7 @@
                 </p>
 
                 <a href="{{ route('home') }}"
-                   class="mt-6 inline-block rounded-lg bg-indigo-700 px-6 py-3 font-semibold text-white hover:bg-indigo-800">
+                   class="mt-6 inline-block rounded-lg bg-orange-700 px-6 py-3 font-semibold text-white hover:bg-orange-800">
                     Browse books
                 </a>
             </div>
@@ -102,7 +102,7 @@
 
                                 <div class="flex flex-wrap items-end justify-between gap-4">
                                     <div>
-                                        <p class="text-lg font-bold text-indigo-700">
+                                        <p class="text-lg font-bold text-orange-700">
                                             ₱{{ number_format($unitPrice, 2) }}
                                         </p>
 
@@ -198,7 +198,7 @@
                         </div>
                     @else
                         <a href="{{ route('checkout') }}"
-                           class="mt-6 block rounded-lg bg-indigo-700 px-4 py-3 text-center font-semibold text-white hover:bg-indigo-800">
+                           class="mt-6 block rounded-lg bg-orange-700 px-4 py-3 text-center font-semibold text-white hover:bg-orange-800">
                             Proceed to checkout
                         </a>
                     @endif
@@ -208,7 +208,7 @@
                     </p>
 
                     <a href="{{ route('home') }}"
-                       class="mt-4 block text-center text-sm text-indigo-700 hover:underline">
+                       class="mt-4 block text-center text-sm text-orange-700 hover:underline">
                         Continue shopping
                     </a>
                 </aside>

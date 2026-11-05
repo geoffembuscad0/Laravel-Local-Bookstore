@@ -5,38 +5,38 @@
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
 
             <a href="{{ route('home') }}"
-               class="text-xl font-bold text-indigo-700">
+               class="text-xl font-bold text-orange-700">
                 Local Bookstore
             </a>
 
             <nav class="flex items-center gap-5 text-sm">
-                <a href="{{ route('home') }}" class="hover:text-indigo-700">
+                <a href="{{ route('home') }}" class="hover:text-orange-700">
                     Home
                 </a>
 
                 <a href="{{ route('collections.index') }}"
-                   class="font-semibold text-indigo-700">
+                   class="font-semibold text-orange-700">
                     Catalog
                 </a>
 
                 @auth
-                    <a href="{{ route('orders.index') }}" class="hover:text-indigo-700">
+                    <a href="{{ route('orders.index') }}" class="hover:text-orange-700">
                         My Orders
                     </a>
                 @endauth
 
-                <a href="{{ route('cart.index') }}" class="hover:text-indigo-700">
+                <a href="{{ route('cart.index') }}" class="hover:text-orange-700">
                     Cart ({{ $cartCount }})
                 </a>
 
                 @guest
-                    <a href="{{ route('login') }}" class="hover:text-indigo-700">
+                    <a href="{{ route('login') }}" class="hover:text-orange-700">
                         Sign In
                     </a>
                 @else
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <button type="submit" class="hover:text-indigo-700">
+                        <button type="submit" class="hover:text-orange-700">
                             Logout
                         </button>
                     </form>
@@ -73,14 +73,14 @@
                     type="search"
                     wire:model.live.debounce.300ms="search"
                     placeholder="Search by title, ISBN, or author..."
-                    class="w-full rounded-lg border-gray-300 px-4 py-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    class="w-full rounded-lg border-gray-300 px-4 py-3 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                 >
             </div>
 
             <div class="sm:w-56">
                 <select
                     wire:model.live="sortBy"
-                    class="w-full rounded-lg border-gray-300 px-4 py-3 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    class="w-full rounded-lg border-gray-300 px-4 py-3 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                 >
                     <option value="newest">Newest first</option>
                     <option value="title">Title: A–Z</option>
@@ -135,7 +135,7 @@
 
                         <h3 class="text-sm font-semibold">
                             <a href="{{ route('product.show', $product->slug) }}"
-                               class="hover:text-indigo-700">
+                               class="hover:text-orange-700">
                                 {{ Str::limit($product->title, 60) }}
                             </a>
                         </h3>
@@ -148,7 +148,7 @@
                         <div class="mt-4">
 
                             @if ($product->discount_price)
-                                <span class="text-lg font-bold text-indigo-700">
+                                <span class="text-lg font-bold text-orange-700">
                                     ₱{{ number_format((float) $product->discount_price, 2) }}
                                 </span>
 
@@ -156,7 +156,7 @@
                                     ₱{{ number_format((float) $product->price, 2) }}
                                 </span>
                             @else
-                                <span class="text-lg font-bold text-indigo-700">
+                                <span class="text-lg font-bold text-orange-700">
                                     ₱{{ number_format((float) $product->price, 2) }}
                                 </span>
                             @endif
@@ -173,7 +173,7 @@
                                     <button
                                         wire:click="addToCart({{ $product->id }})"
                                         wire:loading.attr="disabled"
-                                        class="w-full rounded-lg bg-indigo-700 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-800 disabled:opacity-60"
+                                        class="w-full rounded-lg bg-orange-700 px-3 py-2 text-sm font-medium text-white hover:bg-orange-800 disabled:opacity-60"
                                     >
                                         Add to Cart
                                     </button>
@@ -181,7 +181,7 @@
                                 @elseif (auth()->guest())
 
                                     <a href="{{ route('login') }}"
-                                       class="block rounded-lg border border-indigo-700 px-3 py-2 text-center text-sm font-medium text-indigo-700 hover:bg-indigo-50">
+                                       class="block rounded-lg border border-orange-700 px-3 py-2 text-center text-sm font-medium text-orange-700 hover:bg-orange-50">
                                         Sign In to Purchase
                                     </a>
 
@@ -215,7 +215,7 @@
 
                     <button
                         wire:click="$set('search', '')"
-                        class="mt-4 text-sm font-medium text-indigo-700 hover:underline"
+                        class="mt-4 text-sm font-medium text-orange-700 hover:underline"
                     >
                         Clear Search
                     </button>

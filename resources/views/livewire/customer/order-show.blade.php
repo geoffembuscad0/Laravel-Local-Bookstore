@@ -1,16 +1,16 @@
 <div class="min-h-screen bg-slate-50 text-slate-800">
-    <header class="border-b bg-white"><nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4"><a href="{{ route('home') }}" class="text-xl font-bold text-indigo-700">Local Bookstore</a><div class="flex gap-4 text-sm"><a href="{{ route('home') }}">Shop</a><a href="{{ route('cart.index') }}">Cart</a><a href="{{ route('orders.index') }}" class="font-semibold text-indigo-700">My orders</a></div></nav></header>
+    <header class="border-b bg-white"><nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4"><a href="{{ route('home') }}" class="text-xl font-bold text-orange-700">Local Bookstore</a><div class="flex gap-4 text-sm"><a href="{{ route('home') }}">Shop</a><a href="{{ route('cart.index') }}">Cart</a><a href="{{ route('orders.index') }}" class="font-semibold text-orange-700">My orders</a></div></nav></header>
     <main class="mx-auto max-w-4xl px-4 py-8">
-        <a href="{{ route('orders.index') }}" class="text-sm text-indigo-700">← My orders</a>
+        <a href="{{ route('orders.index') }}" class="text-sm text-orange-700">← My orders</a>
         @if (session('success'))<div class="mt-4 rounded-lg bg-emerald-50 p-4 text-emerald-800">{{ session('success') }}</div>@endif
         @error('order')<div class="mt-4 rounded-lg bg-red-50 p-4 text-red-700">{{ $message }}</div>@enderror
         <section class="mt-5 rounded-xl border bg-white p-6 shadow-sm">
-            <div class="flex flex-wrap justify-between gap-3"><div><p class="text-sm text-slate-500">Order number</p><h1 class="text-2xl font-bold">{{ $order->order_number }}</h1><p class="mt-1 text-sm text-slate-500">Placed {{ $order->placed_at?->format('M j, Y g:i A') }}</p></div><span class="h-fit rounded-full bg-indigo-50 px-3 py-1 text-sm font-semibold text-indigo-800">{{ $order->status_label }}</span></div>
+            <div class="flex flex-wrap justify-between gap-3"><div><p class="text-sm text-slate-500">Order number</p><h1 class="text-2xl font-bold">{{ $order->order_number }}</h1><p class="mt-1 text-sm text-slate-500">Placed {{ $order->placed_at?->format('M j, Y g:i A') }}</p></div><span class="h-fit rounded-full bg-orange-50 px-3 py-1 text-sm font-semibold text-orange-800">{{ $order->status_label }}</span></div>
             @if ($order->status !== 'cancelled')
                 <div class="mt-8 grid grid-cols-4 gap-2 text-center text-xs sm:text-sm">
                     @php($currentStep = array_search($order->status, $progressStatuses, true))
                     @foreach ($progressStatuses as $index => $step)
-                        <div><div class="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-full {{ $currentStep !== false && $index <= $currentStep ? 'bg-indigo-700 text-white' : 'bg-slate-200 text-slate-500' }}">{{ $index + 1 }}</div><span class="{{ $currentStep !== false && $index === $currentStep ? 'font-semibold text-indigo-800' : 'text-slate-500' }}">{{ $statusLabels[$step] }}</span></div>
+                        <div><div class="mx-auto mb-2 flex h-8 w-8 items-center justify-center rounded-full {{ $currentStep !== false && $index <= $currentStep ? 'bg-orange-700 text-white' : 'bg-slate-200 text-slate-500' }}">{{ $index + 1 }}</div><span class="{{ $currentStep !== false && $index === $currentStep ? 'font-semibold text-orange-800' : 'text-slate-500' }}">{{ $statusLabels[$step] }}</span></div>
                     @endforeach
                 </div>
             @else
