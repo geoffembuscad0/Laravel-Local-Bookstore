@@ -31,6 +31,51 @@
                 @error('isbn') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
             </div>
 
+            <!-- Cover Image -->
+            <div class="md:col-span-2">
+                <label for="cover_image"
+                    class="block text-sm font-medium text-gray-700 mb-2">
+                    Book Cover Image
+                </label>
+
+                <input
+                    type="file"
+                    id="cover_image"
+                    wire:model="cover_image"
+                    accept="image/*"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg"
+                >
+
+                <p class="mt-1 text-sm text-gray-500">
+                    Accepted formats: JPEG, PNG, WebP. Maximum size: 2 MB.
+                </p>
+
+                @error('cover_image')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+
+                <!-- Upload Progress -->
+                <div wire:loading wire:target="cover_image"
+                    class="text-sm text-blue-500 mt-2">
+                    Uploading image...
+                </div>
+
+                <!-- Image Preview -->
+                @if ($cover_image)
+                    <div class="mt-4">
+                        <p class="text-sm font-medium text-gray-700 mb-2">
+                            Image Preview
+                        </p>
+
+                        <img
+                            src="{{ $cover_image->temporaryUrl() }}"
+                            alt="Book cover preview"
+                            class="w-40 h-56 object-cover rounded-lg shadow"
+                        >
+                    </div>
+                @endif
+            </div>
+
             <!-- Price -->
             <div>
                 <label for="price" class="block text-sm font-medium text-gray-700 mb-2">Price *</label>

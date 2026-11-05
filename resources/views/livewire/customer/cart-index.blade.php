@@ -67,7 +67,7 @@
                             <div class="flex h-36 w-28 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gray-100">
                                 @if ($book?->cover_image)
                                     <img
-                                        src="{{ asset('storage/' . $book->cover_image) }}"
+                                        src="{{ Storage::disk(config('books.cover_disk'))->url($book->cover_image) }}"
                                         alt="{{ $book->title }}"
                                         class="h-full w-full object-cover"
                                     >
