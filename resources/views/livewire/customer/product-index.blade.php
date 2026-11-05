@@ -33,7 +33,7 @@
             <div class="flex justify-center">
                 @if ($book->cover_image)
                     <img
-                        src="{{ asset('storage/' . $book->cover_image) }}"
+                        src="{{ Storage::disk(config('books.cover_disk'))->url($book->cover_image) }}"
                         alt="{{ $book->title }}"
                         class="max-h-[440px] w-full max-w-[300px] rounded-lg object-contain"
                     >
