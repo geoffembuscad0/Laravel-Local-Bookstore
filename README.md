@@ -1,58 +1,53 @@
-# Development Roadmap
+# Laravel Bookstore — MVP
 
-The project is developed incrementally, with the goal of maintaining a functional and presentable online bookstore.
+A full-stack online bookstore MVP built with Laravel: customer storefront
+with cart/checkout, admin catalog management, and inventory tracking with
+purchase-order receiving. Cash on Delivery, scoped to Metro Manila.
 
-### Completed — Admin Management
+> **Status:** MVP. Payment gateway intentionally deferred (COD-only) to
+> avoid third-party fees; delivery restricted to Metro Manila by design.
 
-- [x] Admin Dashboard
-- [x] Book Management
-- [x] Author Management
-- [x] Category Management
-- [x] Publisher Management
-- [x] Supplier Management
-- [x] Inventory Monitoring
-- [x] Inventory Adjustments
-- [x] Stock Movement History
-- [x] Purchase Order Creation and Management
-- [x] Partial Purchase Order Receiving
-
-### Completed — Customer Storefront
-
-- [x] Homepage and Book Catalog
-- [x] Book Details
-- [x] Category-based Book Browsing
-- [x] Book Search and Sorting
-- [x] Shopping Cart
-- [x] Checkout Workflow
-- [x] Cash on Delivery (COD)
-- [x] Metro Manila Delivery Address Validation
-- [x] Customer Order History
-- [x] Customer Order Details
-- [x] Pending Order Cancellation
-
-### Future Improvements
-
-- [ ] Admin Order Management
-- [ ] Admin Order Status Updates
-- [ ] COD Payment Status Management
-- [ ] Additional Automated Tests
-- [ ] UI and User Experience Improvements
-
----
-
-## Project Notes
-
-This is a personal development project intended to demonstrate practical Laravel application development.
-
-The goal is to build a functional online bookstore with a manageable administrative workflow, rather than an enterprise-level inventory or supply-chain platform.
-
-The implementation prioritizes maintainable code, clear separation of responsibilities, and realistic business rules appropriate for a small bookstore.
-
----
-
-## Project Overview
-
+## Demo
 ![Admin verview](docs/image-admin-book-mgt.png)
 ![Catalog overview](docs/image-catalog-cart.png)
 ![Index overview](docs/image-index.png)
 ![Product overview](docs/image-product-view.png)
+
+## What it does
+**Customer**
+- Browse/search/filter catalog by category
+- Cart → checkout → COD order
+- Order history, order details, pending-order cancellation
+- Delivery address validated against Metro Manila
+
+**Admin**
+- Dashboard
+- Books, authors, categories, publishers, suppliers
+- Inventory monitoring & adjustments
+- Stock movement history
+- Purchase orders + partial receiving
+
+## Architecture notes
+- **Service classes** for [name them — e.g. InventoryService, OrderService]
+  to keep controllers thin and business rules testable
+- **Role-based access** — admin vs. customer routes/middleware
+- **Stock movement ledger** — every inventory change is recorded, so
+  current stock is derived from movements rather than a single counter
+- **Partial PO receiving** — a purchase order can be received across
+  multiple deliveries, with stock updated per receipt
+- **Cover image upload** for book management
+
+## Stack
+Laravel · MySQL · Blade · Tailwind · Vite · Alpine.js *(adjust to reality)*
+
+## Getting started
+```bash
+git clone https://github.com/geoffembuscad0/laravel-bookstore-mvp.git
+cd laravel-bookstore-mvp
+composer install
+npm install && npm run build
+cp .env.example .env
+php artisan key:generate
+# configure DB in .env, then:
+php artisan migrate --seed
+php artisan serve
